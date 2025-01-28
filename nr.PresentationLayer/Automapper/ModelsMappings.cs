@@ -6,6 +6,9 @@ using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
 
 namespace nr.PresentationLayer.Automapper
 {
+    /// <summary>
+    /// Profili di mapping da Model a Dto e viceversa.
+    /// </summary>
     public class ModelsMappings : Profile
     {
         public ModelsMappings() {

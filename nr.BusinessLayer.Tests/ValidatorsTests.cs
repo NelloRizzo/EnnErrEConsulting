@@ -15,7 +15,7 @@ namespace nr.BusinessLayer.Tests
         public void CustomDtoValidatorsTest() {
             var c1 = new CompanyDto {
                 CompanyName = "Test",
-                BusinessAddress = new PostalAddressDto { Address = "", City = "", CivicNumber = "", PostalCode = "", Region = "" }
+                BusinessAddress = new PostalAddressDto { Street = "", City = "", CivicNumber = "", PostalCode = "", Region = "" }
             };
             Assert.That(c1.IsValid, Is.False);
             c1.FiscalCode = "RZZNLL68H06L628E";

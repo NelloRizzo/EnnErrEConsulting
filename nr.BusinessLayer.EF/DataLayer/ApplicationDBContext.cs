@@ -8,6 +8,10 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Tags;
 
 namespace nr.BusinessLayer.EF.DataLayer
 {
+    /// <summary>
+    /// Contesto di database.
+    /// </summary>
+    /// <param name="options">Opzioni di configurazione.</param>
     public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : DbContext(options)
     {
         public virtual DbSet<TagEntity> Tags { get; set; }

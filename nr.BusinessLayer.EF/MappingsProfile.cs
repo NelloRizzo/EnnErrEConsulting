@@ -8,6 +8,9 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Operators;
 
 namespace nr.BusinessLayer.EF
 {
+    /// <summary>
+    /// Profili per AutoMapper da Entity a Dto e viceversa.
+    /// </summary>
     internal class MappingsProfile : Profile
     {
         public MappingsProfile() {

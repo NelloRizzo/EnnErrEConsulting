@@ -2,6 +2,9 @@
 
 namespace nr.BusinessLayer.Dto.Attachments
 {
+    /// <summary>
+    /// Link ad un contenuto esterno.
+    /// </summary>
     public class UrlLinkDto : LinkDto
     {
         [Required, MaxLength(512)]

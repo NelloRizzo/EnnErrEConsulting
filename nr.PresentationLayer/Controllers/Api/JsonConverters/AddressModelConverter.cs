@@ -4,8 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace nr.PresentationLayer.Controllers.Api.JsonConverters
 {
+    /// <summary>
+    /// Converter JSON per tutti gli indirizzi.
+    /// </summary>
     public class AddressModelConverter : JsonConverter<AddressModel>
     {
+        /// <inheritdoc/>
         public override AddressModel? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
             using var doc = JsonDocument.ParseValue(ref reader);
             var root = doc.RootElement;
@@ -18,6 +22,7 @@ namespace nr.PresentationLayer.Controllers.Api.JsonConverters
             };
         }
 
+        /// <inheritdoc/>
         public override void Write(Utf8JsonWriter writer, AddressModel value, JsonSerializerOptions options) {
             switch (value.Type) {
                 case "EmailAddressModel": JsonSerializer.Serialize(writer, (EmailAddressModel)value, options); break;

@@ -6,8 +6,15 @@ using nr.BusinessLayer.Services;
 
 namespace nr.BusinessLayer.EF
 {
+    /// <summary>
+    /// Configurazione del layer di business.
+    /// </summary>
     public static class Configuration
     {
+        /// <summary>
+        /// Configura i servizi.
+        /// </summary>
+        /// <param name="options">Opzioni per la configurazione del database.</param>
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, Action<DbContextOptionsBuilder> options) =>
             services
                 .AddDbContext<ApplicationDBContext>(options)

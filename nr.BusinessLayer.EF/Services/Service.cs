@@ -5,10 +5,13 @@ using nr.BusinessLayer.Services;
 
 namespace nr.BusinessLayer.EF.Services
 {
-    public class Service(ILogger<Service> logger, ApplicationDBContext context) : IService
+    /// <summary>
+    /// Classe di base per tutti i servizi.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="context"></param>
+    public class Service : IService
     {
-        protected ILogger<Service> logger = logger;
-        protected ApplicationDBContext context = context;
         protected IMapper mapper = new MapperConfiguration(cfg => cfg.AddProfile<MappingsProfile>()).CreateMapper();
     }
 }

@@ -9,44 +9,55 @@ using nr.BusinessLayer.Services.Exceptions;
 
 namespace nr.BusinessLayer.EF.Services
 {
-    public class CustomerService(ILogger<Service> logger, ApplicationDBContext context) : Service(logger, context), ICustomerService
+    /// <inheritdoc/>
+    public class CustomerService(ILogger<Service> logger, ApplicationDBContext context) : Service(), ICustomerService
     {
+        /// <inheritdoc/>
         public Task<CustomerDto> AddAddressAsync(int customerId, AddressDto address) {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Task<IEnumerable<CustomerDto>> GetAllAsync() {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<CustomerDto>> GetAllByCityAndProvinceAsync(string city, string province) {
+        /// <inheritdoc/>
+        public Task<IEnumerable<CustomerDto>> GetAllByCityAndProvinceAsync(string? city, string? province) {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<CustomerDto>> GetAllByEmailAsync(string email) {
+        /// <inheritdoc/>
+        public Task<IEnumerable<CustomerDto>> GetAllByEmailContainsAsync(string email) {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<CustomerDto>> GetAllByNameAsync(string name) {
+        /// <inheritdoc/>
+        public Task<IEnumerable<CustomerDto>> GetAllByNameContainsAsync(string name) {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Task<CustomerDto?> GetByIdAsync(int id) {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Task<IEnumerable<CustomerDto>> GetCustomersAsync() {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Task<IEnumerable<CustomerDto>> GetPeopleAsync() {
             throw new NotImplementedException();
         }
 
-        public Task<CustomerDto> RemoveAddressAsync(int customerId, AddressDto address) {
+        /// <inheritdoc/>
+        public Task<CustomerDto> RemoveAddressAsync(int customerId, int addressId) {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task<PersonDto> RegisterAsync(PersonDto personDto) {
             try {
                 var person = mapper.Map<PersonEntity>(personDto);
@@ -64,6 +75,7 @@ namespace nr.BusinessLayer.EF.Services
             }
         }
 
+        /// <inheritdoc/>
         public Task<CompanyDto> RegisterAsync(CompanyDto companyDto) {
             throw new NotImplementedException();
         }

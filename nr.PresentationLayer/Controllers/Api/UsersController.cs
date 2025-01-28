@@ -10,11 +10,21 @@ using System.Text;
 
 namespace nr.PresentationLayer.Controllers.Api
 {
+    /// <summary>
+    /// Controllers per la gestione degli utenti.
+    /// </summary>
+    /// <param name="userService">Servizio di gestione degli utenti.</param>
+    /// <param name="configuration">Gestore della configurazione.</param>
+    /// <param name="logger">Logger.</param>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController(IUserService userService, IConfiguration configuration, ILogger<UsersController> logger) : ApiControllerBase()
     {
-        protected IUserService _userService = userService;
+        /// <summary>
+        /// Genera il token JWT.
+        /// </summary>
+        /// <param name="user">Dati dell'utente.</param>
+        /// <returns>Il token JWT.</returns>
         private string GenerateJwtToken(UserDto user) {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -32,10 +42,14 @@ namespace nr.PresentationLayer.Controllers.Api
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        /// <summary>
+        /// Gestisce il login di un utente.
+        /// </summary>
+        /// <param name="loginModel">Dati di login.</param>
         [HttpPost("login")]
         public async Task<Results<IResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
             try {
-                var user = await _userService.LoginUserAsync(loginModel.Username, loginModel.Password);
+                var user = await userService.LoginUserAsync(loginModel.Username, loginModel.Password);
                 if (user == null) return TypedResults.Unauthorized();
                 var token = GenerateJwtToken(user);
                 return TypedResults.Ok(new TokenModel { Token = token, Username = user.Email, Roles = user.Roles });
@@ -45,12 +59,17 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.BadRequest();
             }
         }
+
+        /// <summary>
+        /// Gestisce la registrazione di un utente.
+        /// </summary>
+        /// <param name="userModel">Dati dell'utente.</param>
         [HttpPost]
-        public async Task<Results<IResult, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel model) {
+        public async Task<Results<IResult, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
             try {
                 if (ModelState.IsValid)
                     try {
-                        var user = await _userService.RegisterUserAsync(new UserDto { Email = model.Email, Password = model.Password, Roles = model.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
+                        var user = await userService.RegisterUserAsync(new UserDto { Email = userModel.Email, Password = userModel.Password, Roles = userModel.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
                         return TypedResults.Ok(new UserModel { Email = user!.Email, Roles = string.Join(',', user.Roles) });
                     }
                     catch (Exception ex) {
@@ -66,10 +85,13 @@ namespace nr.PresentationLayer.Controllers.Api
             return TypedResults.BadRequest("Invalid model");
         }
 
+        /// <summary>
+        /// Ottiene l'elenco di tutti gli utenti.
+        /// </summary>
         [HttpGet]
         public async Task<Results<IResult, Ok<IEnumerable<UserModel>>>> GetUsers() {
             try {
-                var users = await _userService.GetUsersAsync();
+                var users = await userService.GetUsersAsync();
                 return TypedResults.Ok(users.Select(u => new UserModel { Email = u.Email, Roles = string.Join(',', u.Roles) }));
             }
             catch (Exception ex) {

@@ -23,7 +23,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="personModel">Dati da inserire.</param>
         [HttpPost("person")]
-        public async Task<Results<IResult, Ok<PersonDto>>> RegisterPerson([FromBody] PersonModel personModel) {
+        public async Task<Results<BadRequest, Ok<PersonModel>>> RegisterPerson([FromBody] PersonModel personModel) {
             if (ModelState.IsValid)
                 try {
                     var person = await customerService.RegisterAsync(mapper.Map<PersonDto>(personModel));
@@ -41,12 +41,16 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="companyModel">Dati da inserire.</param>
         [HttpPost("company")]
-        public async Task<Results<IResult, Ok<CompanyModel>>> RegisterCompany([FromBody] CompanyModel companyModel) {
-            if (ModelState.IsValid) {
-                var company = mapper.Map<CompanyDto>(companyModel);
-                await customerService.RegisterAsync(company);
-                return TypedResults.Ok(companyModel);
-            }
+        public async Task<Results<BadRequest, Ok<CompanyModel>>> RegisterCompany([FromBody] CompanyModel companyModel) {
+            if (ModelState.IsValid)
+                try {
+                    var company = await customerService.RegisterAsync(mapper.Map<CompanyDto>(companyModel));
+                    var result = mapper.Map<CompanyModel>(company);
+                    return TypedResults.Ok(result);
+                }
+                catch (Exception ex) {
+                    logger.LogError(ex, "Exception registering company");
+                }
             return TypedResults.BadRequest();
         }
     }

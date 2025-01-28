@@ -49,6 +49,7 @@ namespace nr.BusinessLayer.EF
                 .ForMember(d => d.Addresses, m => m.Ignore())
                 ;
             CreateMap<CompanyDto, CompanyEntity>()
+                .ForMember(d => d.Pec, m => m.MapFrom(s => new EmailAddressEntity { Email = s.Pec! }))
                             ;
             CreateMap<PersonDto, PersonEntity>()
                 ;
@@ -57,6 +58,7 @@ namespace nr.BusinessLayer.EF
                 .IncludeAllDerived()
                 ;
             CreateMap<CompanyEntity, CompanyDto>()
+                .ForMember(d => d.Pec, m => m.MapFrom(s => s.Pec == null ? null : s.Pec.Email))
                             ;
             CreateMap<PersonEntity, PersonDto>()
                 ;

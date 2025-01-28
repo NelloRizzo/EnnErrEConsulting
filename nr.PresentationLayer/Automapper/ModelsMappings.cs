@@ -12,12 +12,22 @@ namespace nr.PresentationLayer.Automapper
     public class ModelsMappings : Profile
     {
         public ModelsMappings() {
+            #region People
             CreateMap<PersonModel, PersonDto>()
                 .ForMember(d => d.Addresses, m => m.MapFrom(s => s.AdditionalAddresses))
                 ;
             CreateMap<PersonDto, PersonModel>()
                 .ForMember(d => d.AdditionalAddresses, m => m.MapFrom(s => s.Addresses))
                 ;
+            #endregion
+            #region Companies
+            CreateMap<CompanyModel, CompanyDto>()
+                .ForMember(d => d.Addresses, m => m.MapFrom(s => s.AdditionalAddresses))
+                ;
+            CreateMap<CompanyDto, CompanyModel>()
+                .ForMember(d => d.AdditionalAddresses, m => m.MapFrom(s => s.Addresses))
+                ;
+            #endregion
 
             #region Addresses            
             CreateMap<AddressModel, AddressDto>()
@@ -31,6 +41,13 @@ namespace nr.PresentationLayer.Automapper
                 ;
             CreateMap<PhoneNumberAddressModel, PhoneNumberAddressDto>()
                 .IncludeBase<AddressModel, AddressDto>()
+                ;
+
+            CreateMap<string, EmailAddressModel>()
+                .ForMember(d => d.Email, m => m.MapFrom(s => new EmailAddressModel { Email = s }))
+                ;
+            CreateMap<EmailAddressModel, string>()
+                .ConstructUsing((s, ctx) => s.Email)
                 ;
 
             CreateMap<AddressDto, AddressModel>()

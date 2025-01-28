@@ -76,8 +76,21 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
-        public Task<CompanyDto> RegisterAsync(CompanyDto companyDto) {
-            throw new NotImplementedException();
+        public async Task<CompanyDto> RegisterAsync(CompanyDto companyDto) {
+            try {
+                var company = mapper.Map<CompanyEntity>(companyDto);
+                var trans = await context.Database.BeginTransactionAsync();
+                foreach (var address in companyDto.Addresses.Select(mapper.Map<AddressEntity>))
+                    company.Addresses.Add(address);
+                context.Customers.Add(company);
+                await context.SaveChangesAsync();
+                await trans.CommitAsync();
+                return mapper.Map<CompanyDto>(company);
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception registering company");
+                throw new ServiceException(innerException: ex);
+            }
         }
     }
 }

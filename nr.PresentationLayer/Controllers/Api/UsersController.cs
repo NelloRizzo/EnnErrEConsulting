@@ -47,7 +47,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="loginModel">Dati di login.</param>
         [HttpPost("login")]
-        public async Task<Results<IResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
+        public async Task<Results<BadRequest, UnauthorizedHttpResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
             try {
                 var user = await userService.LoginUserAsync(loginModel.Username, loginModel.Password);
                 if (user == null) return TypedResults.Unauthorized();
@@ -65,7 +65,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="userModel">Dati dell'utente.</param>
         [HttpPost]
-        public async Task<Results<IResult, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
+        public async Task<Results<BadRequest, InternalServerError, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
             try {
                 if (ModelState.IsValid)
                     try {
@@ -82,14 +82,14 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.BadRequest();
             }
             logger.LogError("Invalid model: \n{}", string.Join("", ModelState.Select(e => $"\t{e.Key} -> {e.Value}\n")));
-            return TypedResults.BadRequest("Invalid model");
+            return TypedResults.BadRequest();
         }
 
         /// <summary>
         /// Ottiene l'elenco di tutti gli utenti.
         /// </summary>
         [HttpGet]
-        public async Task<Results<IResult, Ok<IEnumerable<UserModel>>>> GetUsers() {
+        public async Task<Results<InternalServerError, Ok<IEnumerable<UserModel>>>> GetUsers() {
             try {
                 var users = await userService.GetUsersAsync();
                 return TypedResults.Ok(users.Select(u => new UserModel { Email = u.Email, Roles = string.Join(',', u.Roles) }));

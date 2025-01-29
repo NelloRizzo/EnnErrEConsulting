@@ -53,7 +53,9 @@ namespace nr.PresentationLayer.Controllers.Api
                 }
             return TypedResults.BadRequest();
         }
-
+        /// <summary>
+        /// Recupera tutti i clienti.
+        /// </summary>
         [HttpGet]
         public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomers() {
             try {

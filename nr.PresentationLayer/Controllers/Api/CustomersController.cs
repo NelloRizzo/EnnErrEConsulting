@@ -67,5 +67,47 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.BadRequest();
             }
         }
+        /// <summary>
+        /// Recupera tutti i clienti tramite una parte dell'email.
+        /// </summary>
+        [HttpPost("/by/email")]
+        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByEmail([FromBody] SearchByEmailModel model) {
+            try {
+                var result = await customerService.GetAllByEmailContainsAsync(model.Email);
+                return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving all customers by email {}", model.Email);
+                return TypedResults.BadRequest();
+            }
+        }
+        /// <summary>
+        /// Recupera tutti i clienti tramite una parte di città e/o provincia.
+        /// </summary>
+        [HttpPost("/by/city")]
+        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByCity([FromBody] SearchByCityModel model) {
+            try {
+                var result = await customerService.GetAllByCityAndProvinceAsync(model.City, model.Province);
+                return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving all customers by city {} and province {}", model.City, model.Province);
+                return TypedResults.BadRequest();
+            }
+        }
+        /// <summary>
+        /// Recupera tutti i clienti tramite una parte del nome.
+        /// </summary>
+        [HttpPost("/by/name")]
+        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByName([FromBody] SearchByNameModel model) {
+            try {
+                var result = await customerService.GetAllByNameContainsAsync(model.Name);
+                return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving all customers by name {}", model.Name);
+                return TypedResults.BadRequest();
+            }
+        }
     }
 }

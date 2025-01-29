@@ -12,8 +12,9 @@ namespace nr.BusinessLayer.EF.Services
     /// <inheritdoc/>
     public class UserService(ILogger<Service> logger, ApplicationDBContext context) : Service(), IUserService
     {
-
         /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<bool> AddUserToRoleAsync(string username, string roleName) {
             try {
                 var user = await context.Users.SingleAsync(u => u.Email == username) ?? throw new EntityNotFoundException { SearchedKey = username, SearchedType = typeof(UserDto) };
@@ -32,6 +33,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         private async Task<RoleEntity> AddRoleAsync(string roleName) {
             try {
                 var role = new RoleEntity { RoleName = roleName.ToLower() };
@@ -46,6 +48,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<bool> DeleteRoleAsync(string roleName) {
             try {
                 var role = await context.Roles.SingleOrDefaultAsync(r => r.RoleName.Equals(roleName, StringComparison.InvariantCultureIgnoreCase));
@@ -61,6 +64,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<RoleDto>> GetRolesAsync() {
             try {
                 return await context.Roles.Select(r => new RoleDto { RoleName = r.RoleName, Id = r.Id }).ToListAsync();
@@ -72,6 +76,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<UserDto?> GetUserByUsernameAsync(string username) {
             try {
                 var user = await context.Users.SingleAsync(u => u.Email == username);
@@ -85,6 +90,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<UserDto>> GetUsersAsync() {
             try {
                 return mapper.Map<IEnumerable<UserDto>>(await context.Users.ToListAsync());
@@ -96,6 +102,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<bool> IsUserInRoleAsync(string username, string roleName) {
             try {
                 var user = await context.Users.SingleAsync(u => u.Email == username);
@@ -108,6 +115,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<UserDto?> LoginUserAsync(string username, string password) {
             try {
                 var user = await context.Users.SingleOrDefaultAsync(u => u.Email == username && u.Password == password);
@@ -120,6 +128,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<UserDto?> LogoutUserAsync(string username) {
             logger.LogInformation("Method {} is not implemented as significant", nameof(LogoutUserAsync));
             try {
@@ -133,6 +142,8 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidDtoException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<UserDto?> RegisterUserAsync(UserDto user) {
             try {
                 if (!user.IsValid()) throw new InvalidDtoException { InvalidDto = user };
@@ -155,6 +166,8 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<bool> RemoveUserFromRoleAsync(string username, string roleName) {
             try {
                 var user = await context.Users.SingleAsync(u => u.Email == username) ?? throw new EntityNotFoundException { SearchedKey = username, SearchedType = typeof(UserDto) };

@@ -8,8 +8,7 @@ namespace nr.BusinessLayer.EF.Migrations
     public partial class PecModifiedInCompany : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropForeignKey(
                 name: "FK_Companies_Emails_PecId",
                 table: "Companies");
@@ -32,8 +31,7 @@ namespace nr.BusinessLayer.EF.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropColumn(
                 name: "Pec",
                 table: "Companies");

@@ -20,6 +20,7 @@ namespace nr.BusinessLayer.EF
                 .AddDbContext<ApplicationDBContext>(options)
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<ICustomerService, CustomerService>()
+                .AddScoped<ICourseService, CourseService>()
             ;
     }
 }

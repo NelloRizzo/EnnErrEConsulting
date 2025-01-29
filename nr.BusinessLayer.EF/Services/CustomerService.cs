@@ -8,7 +8,6 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
 using nr.BusinessLayer.Services;
 using nr.BusinessLayer.Services.Exceptions;
 using nr.Validation;
-using System.Net.Mail;
 
 namespace nr.BusinessLayer.EF.Services
 {
@@ -16,6 +15,9 @@ namespace nr.BusinessLayer.EF.Services
     public class CustomerService(ILogger<Service> logger, ApplicationDBContext context) : Service(), ICustomerService
     {
         /// <inheritdoc/>
+        /// <exception cref="InvalidDtoException"></exception>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<CustomerDto> AddAddressAsync(int customerId, AddressDto addressDto) {
             try {
                 if (!addressDto.IsValid()) throw new InvalidDtoException { InvalidDto = addressDto };
@@ -35,6 +37,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetAllAsync() {
             try {
                 return mapper.Map<IEnumerable<CustomerDto>>(await context.Customers.ToListAsync());
@@ -46,6 +49,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetAllByCityAndProvinceAsync(string? city, string? province) {
             try {
                 var result = await context.Customers.Include(c => c.BusinessAddress).Include(c => c.Addresses)
@@ -63,6 +67,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetAllByEmailContainsAsync(string email) {
             try {
                 var companies = mapper.Map<IEnumerable<CustomerDto>>(await context.Companies.Where(c => c.Pec.Contains(email)).ToListAsync());
@@ -76,6 +81,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetAllByNameContainsAsync(string name) {
             try {
                 IQueryable<CustomerEntity> companies = context.Companies.Where(c => c.CompanyName.Contains(name));
@@ -90,6 +96,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<CustomerDto?> GetByIdAsync(int id) {
             try {
                 return mapper.Map<CustomerDto?>(await context.Customers.FindAsync(id));
@@ -101,6 +108,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetCompaniesAsync() {
             try {
                 return mapper.Map<IEnumerable<CustomerDto>>(await context.Companies.ToListAsync());
@@ -112,6 +120,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CustomerDto>> GetPeopleAsync() {
             try {
                 return mapper.Map<IEnumerable<CustomerDto>>(await context.People.ToListAsync());
@@ -123,6 +132,8 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<CustomerDto> RemoveAddressAsync(int customerId, int addressId) {
             try {
                 var customer = await context.Customers.SingleOrDefaultAsync(c => c.Id == customerId) ?? throw new EntityNotFoundException { SearchedKey = customerId, SearchedType = typeof(CustomerDto) };
@@ -141,6 +152,8 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidDtoException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<PersonDto> RegisterAsync(PersonDto personDto) {
             try {
                 if (!personDto.IsValid()) throw new InvalidDtoException { InvalidDto = personDto };
@@ -163,6 +176,8 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidDtoException"></exception>
+        /// <exception cref="ServiceException"></exception>
         public async Task<CompanyDto> RegisterAsync(CompanyDto companyDto) {
             try {
                 if (!companyDto.IsValid()) throw new InvalidDtoException { InvalidDto = companyDto };

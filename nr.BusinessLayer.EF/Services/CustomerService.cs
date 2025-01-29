@@ -8,6 +8,7 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
 using nr.BusinessLayer.Services;
 using nr.BusinessLayer.Services.Exceptions;
 using nr.Validation;
+using System.Net.Mail;
 
 namespace nr.BusinessLayer.EF.Services
 {
@@ -47,11 +48,12 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         public async Task<IEnumerable<CustomerDto>> GetAllByCityAndProvinceAsync(string? city, string? province) {
             try {
-                Predicate<PostalAddressEntity> searchInAddress = address =>
-                    (city == null || address.City.Contains(city, StringComparison.CurrentCultureIgnoreCase))
-                    && (province == null || address.Region.Contains(province, StringComparison.CurrentCultureIgnoreCase));
-
-                var result = await context.Customers.Where(c => searchInAddress(c.BusinessAddress) || c.Addresses.OfType<PostalAddressEntity>().Any(a => searchInAddress(a))).ToListAsync();
+                var result = await context.Customers.Include(c => c.BusinessAddress).Include(c => c.Addresses)
+                    .Where(c =>
+                        ((city == null || c.BusinessAddress.City.Contains(city)) && (province == null || c.BusinessAddress.Region.Contains(province)))
+                        || c.Addresses.OfType<PostalAddressEntity>().Any(
+                            a => (city == null || a.City.Contains(city)) && (province == null || a.Region.Contains(province)))
+                        ).ToListAsync();
                 return mapper.Map<IEnumerable<CustomerDto>>(result);
             }
             catch (Exception ex) {
@@ -63,12 +65,9 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         public async Task<IEnumerable<CustomerDto>> GetAllByEmailContainsAsync(string email) {
             try {
-                Predicate<EmailAddressEntity?> searchEmail = emailAddress => emailAddress?.Email.Contains(email, StringComparison.CurrentCultureIgnoreCase) ?? false;
-
-                IQueryable<CustomerEntity> companies = context.Companies.Where(c => searchEmail(c.Pec) || c.Addresses.OfType<EmailAddressEntity>().Any(e => searchEmail(e)));
-                IQueryable<CustomerEntity> people = context.People.Where(p => p.Addresses.OfType<EmailAddressEntity>().Any(e => searchEmail(e)));
-                var result = await companies.Union(people).ToListAsync();
-                return mapper.Map<IEnumerable<CustomerDto>>(result);
+                var companies = mapper.Map<IEnumerable<CustomerDto>>(await context.Companies.Where(c => c.Pec.Contains(email)).ToListAsync());
+                var others = mapper.Map<IEnumerable<CustomerDto>>(await context.Customers.Include(p => p.Addresses).Where(p => p.Addresses.OfType<EmailAddressEntity>().Any(e => e.Email.Contains(email))).ToListAsync());
+                return companies.Union(others);
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Unattended exception retrieving all customers by email {}", email);
@@ -79,8 +78,8 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         public async Task<IEnumerable<CustomerDto>> GetAllByNameContainsAsync(string name) {
             try {
-                IQueryable<CustomerEntity> companies = context.Companies.Where(c => c.CompanyName.Contains(name, StringComparison.CurrentCultureIgnoreCase));
-                IQueryable<CustomerEntity> people = context.People.Where(p => p.FirstName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || p.LastName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || (p.Nickname != null && p.Nickname.Contains(name, StringComparison.CurrentCultureIgnoreCase)));
+                IQueryable<CustomerEntity> companies = context.Companies.Where(c => c.CompanyName.Contains(name));
+                IQueryable<CustomerEntity> people = context.People.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || (p.Nickname != null && p.Nickname.Contains(name)));
                 var result = await companies.Union(people).ToListAsync();
                 return mapper.Map<IEnumerable<CustomerDto>>(result);
             }
@@ -91,8 +90,14 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
-        public Task<CustomerDto?> GetByIdAsync(int id) {
-            throw new NotImplementedException();
+        public async Task<CustomerDto?> GetByIdAsync(int id) {
+            try {
+                return mapper.Map<CustomerDto?>(await context.Customers.FindAsync(id));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception retrieving customer by id {}", id);
+                throw new ServiceException(innerException: ex);
+            }
         }
 
         /// <inheritdoc/>

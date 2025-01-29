@@ -29,7 +29,7 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
         /// Indirizzo di posta elettronica certificata.
         /// </summary>
         [EmailAddress, MaxLength(80)]
-        public virtual EmailAddressEntity? Pec { get; set; }
+        public virtual required string Pec { get; set; }
         /// <summary>
         /// SDI.
         /// </summary>

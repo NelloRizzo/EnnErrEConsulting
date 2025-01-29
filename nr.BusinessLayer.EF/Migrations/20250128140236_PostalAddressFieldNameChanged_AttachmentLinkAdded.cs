@@ -8,8 +8,7 @@ namespace nr.BusinessLayer.EF.Migrations
     public partial class PostalAddressFieldNameChanged_AttachmentLinkAdded : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.RenameColumn(
                 name: "Address",
                 table: "PostalAddresses",
@@ -17,14 +16,12 @@ namespace nr.BusinessLayer.EF.Migrations
 
             migrationBuilder.CreateTable(
                 name: "LinkEntity",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MimeType = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_LinkEntity", x => x.Id);
                 });
 
@@ -43,8 +40,7 @@ namespace nr.BusinessLayer.EF.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropForeignKey(
                 name: "FK_Attachments_LinkEntity_LinkId",
                 table: "Attachments");

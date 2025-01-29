@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
-using nr.BusinessLayer.EF.DataLayer;
 using nr.BusinessLayer.Services;
 
 namespace nr.BusinessLayer.EF.Services

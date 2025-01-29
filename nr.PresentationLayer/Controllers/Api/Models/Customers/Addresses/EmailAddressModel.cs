@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using nr.Utils;
+using System.ComponentModel.DataAnnotations;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
 {
@@ -7,6 +8,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
     /// </summary>
     public class EmailAddressModel : AddressModel
     {
+        internal static readonly string ModelType = nameof(EmailAddressModel).ToCamelCase().Replace("AddressModel", "");
         /// <summary>
         /// L'indirizzo.
         /// </summary>

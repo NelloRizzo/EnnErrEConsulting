@@ -1,11 +1,17 @@
 ﻿
+using System.Text.RegularExpressions;
+
 namespace nr.Utils
 {
-    public static class StringsExtensions
+    public static partial class StringsExtensions
     {
         public static bool IsFiscalCode(this string code) => IsValidFiscalCode(code);
         public static bool IsVatCode(this string code) => IsValidVatCode(code);
 
+        public static string ToCamelCase(this string input) {
+            string result = SearchForWord().Replace(input, match => match.Groups[1].Value.ToUpper());
+            return char.ToLower(result[0]) + result.Substring(1);
+        }
         public static IEnumerable<(char, int)> EnumerateChars(this string text, int startIndex = 0) {
             for (var i = startIndex; i < text.Length; i++) {
                 yield return (text[i], i);
@@ -45,5 +51,8 @@ namespace nr.Utils
             }
             return ((char)sum % 26 + 'A') == code.Last();
         }
+
+        [GeneratedRegex(@"(?:^|[\s-_])(\w)")]
+        private static partial Regex SearchForWord();
     }
 }

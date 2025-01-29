@@ -1,12 +1,14 @@
 ﻿using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
+using nr.Utils;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Customers
 {
     /// <summary>
     /// Una persona.
     /// </summary>
-    public class PersonModel
+    public class PersonModel : CustomerModel
     {
+        internal static readonly string ModelType = nameof(PersonModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// Nome.
         /// </summary>
@@ -23,9 +25,5 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// Indirizzo di residenza.
         /// </summary>
         public required PostalAddressModel BusinessAddress { get; set; }
-        /// <summary>
-        /// Eventuali indirizzi addizionali.
-        /// </summary>
-        public IEnumerable<AddressModel> AdditionalAddresses { get; set; } = [];
     }
 }

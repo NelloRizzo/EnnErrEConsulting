@@ -1,4 +1,5 @@
 ﻿using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
+using nr.Utils;
 using nr.Validation;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,8 +11,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
 
     [AtLeastOne(nameof(FiscalCode), nameof(VatCode))]
     [AtLeastOne(nameof(Pec), nameof(Sdi))]
-    public class CompanyModel
+    public class CompanyModel : CustomerModel
     {
+        internal static readonly string ModelType = nameof(CompanyModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// Nome dell'azienda.
         /// </summary>
@@ -41,9 +43,5 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// Indirizzo della sede fiscale.
         /// </summary>
         public required PostalAddressModel BusinessAddress { get; set; }
-        /// <summary>
-        /// Evenutali indirizzi addizionali.
-        /// </summary>
-        public IEnumerable<AddressModel> AdditionalAddresses { get; set; } = [];
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using nr.BusinessLayer.Dto.Customers;
 using nr.BusinessLayer.Dto.Customers.Addresses;
 using nr.BusinessLayer.EF.DataLayer;
@@ -18,8 +19,14 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<CustomerDto>> GetAllAsync() {
-            throw new NotImplementedException();
+        public async Task<IEnumerable<CustomerDto>> GetAllAsync() {
+            try {
+                return mapper.Map<IEnumerable<CustomerDto>>(await context.Customers.ToListAsync());
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception retrieving all customers");
+                throw new ServiceException(innerException: ex);
+            }
         }
 
         /// <inheritdoc/>

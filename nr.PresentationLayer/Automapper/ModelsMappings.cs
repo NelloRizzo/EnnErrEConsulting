@@ -12,20 +12,26 @@ namespace nr.PresentationLayer.Automapper
     public class ModelsMappings : Profile
     {
         public ModelsMappings() {
-            #region People
-            CreateMap<PersonModel, PersonDto>()
+            #region Customers
+            CreateMap<CustomerModel, CustomerDto>()
+                .IncludeAllDerived()
                 .ForMember(d => d.Addresses, m => m.MapFrom(s => s.AdditionalAddresses))
+                ;
+            CreateMap<CustomerDto, CustomerModel>()
+                .IncludeAllDerived()
+                .ForMember(d => d.AdditionalAddresses, m => m.MapFrom(s => s.Addresses))
+                ;
+
+            CreateMap<PersonModel, PersonDto>()
                 ;
             CreateMap<PersonDto, PersonModel>()
-                .ForMember(d => d.AdditionalAddresses, m => m.MapFrom(s => s.Addresses))
+                .ForMember(d => d.Type, m => m.MapFrom(s => PersonModel.ModelType))
                 ;
-            #endregion
-            #region Companies
+
             CreateMap<CompanyModel, CompanyDto>()
-                .ForMember(d => d.Addresses, m => m.MapFrom(s => s.AdditionalAddresses))
                 ;
             CreateMap<CompanyDto, CompanyModel>()
-                .ForMember(d => d.AdditionalAddresses, m => m.MapFrom(s => s.Addresses))
+                .ForMember(d => d.Type, m => m.MapFrom(s => CompanyModel.ModelType))
                 ;
             #endregion
 
@@ -55,15 +61,15 @@ namespace nr.PresentationLayer.Automapper
                 ;
             CreateMap<PostalAddressDto, PostalAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => "PostalAddressModel"))
+                .ForMember(d => d.Type, m => m.MapFrom(s => PostalAddressModel.ModelType))
                 ;
             CreateMap<EmailAddressDto, EmailAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => "EmailAddressModel"))
+                .ForMember(d => d.Type, m => m.MapFrom(s => EmailAddressModel.ModelType))
                 ;
             CreateMap<PhoneNumberAddressDto, PhoneNumberAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => "PhoneNumberAddressModel"))
+                .ForMember(d => d.Type, m => m.MapFrom(s => PhoneNumberAddressModel.ModelType))
                 ;
             #endregion
 

@@ -53,5 +53,17 @@ namespace nr.PresentationLayer.Controllers.Api
                 }
             return TypedResults.BadRequest();
         }
+
+        [HttpGet]
+        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomers() {
+            try {
+                var result = await customerService.GetAllAsync();
+                return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving all customers");
+                return TypedResults.BadRequest();
+            }
+        }
     }
 }

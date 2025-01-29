@@ -10,9 +10,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Users
         /// <summary>
         /// Username.
         /// </summary>
-        [Required(AllowEmptyStrings =false), EmailAddress]
+        [Required(AllowEmptyStrings = false), EmailAddress]
         public required string Username { get; set; }
-        [Required(AllowEmptyStrings =false), StringLength(20)]
+        [Required(AllowEmptyStrings = false), StringLength(20)]
         /// <summary>
         /// Password.
         /// </summary>

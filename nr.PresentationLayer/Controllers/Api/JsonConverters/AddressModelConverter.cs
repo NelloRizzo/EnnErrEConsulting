@@ -14,22 +14,23 @@ namespace nr.PresentationLayer.Controllers.Api.JsonConverters
             using var doc = JsonDocument.ParseValue(ref reader);
             var root = doc.RootElement;
             var type = root.GetProperty("type").GetString();
-            return type switch {
-                "EmailAddressModel" => JsonSerializer.Deserialize<EmailAddressModel>(root.GetRawText(), options),
-                "PhoneNumberAddressModel" => JsonSerializer.Deserialize<PhoneNumberAddressModel>(root.GetRawText(), options),
-                "PostalAddressModel" => JsonSerializer.Deserialize<PostalAddressModel>(root.GetRawText(), options),
-                _ => throw new NotSupportedException($"Type {type} is not supported")
-            };
+            return
+                 (type == EmailAddressModel.ModelType) ? JsonSerializer.Deserialize<EmailAddressModel>(root.GetRawText(), options) :
+                 (type == PhoneNumberAddressModel.ModelType) ? JsonSerializer.Deserialize<PhoneNumberAddressModel>(root.GetRawText(), options) :
+                 (type == PostalAddressModel.ModelType) ? JsonSerializer.Deserialize<PostalAddressModel>(root.GetRawText(), options) :
+                 throw new NotSupportedException($"Type {type} is not supported");
         }
 
         /// <inheritdoc/>
         public override void Write(Utf8JsonWriter writer, AddressModel value, JsonSerializerOptions options) {
-            switch (value.Type) {
-                case "EmailAddressModel": JsonSerializer.Serialize(writer, (EmailAddressModel)value, options); break;
-                case "PhoneNumberAddressModel": JsonSerializer.Serialize(writer, (PhoneNumberAddressModel)value, options); break;
-                case "PostalAddressModel": JsonSerializer.Serialize(writer, (PostalAddressModel)value, options); break;
-                default: throw new NotSupportedException($"Type not supported");
-            };
+            if (value.Type == EmailAddressModel.ModelType)
+                JsonSerializer.Serialize(writer, (EmailAddressModel)value, options);
+            else if (value.Type == PhoneNumberAddressModel.ModelType)
+                JsonSerializer.Serialize(writer, (PhoneNumberAddressModel)value, options);
+            else if (value.Type == PostalAddressModel.ModelType)
+                JsonSerializer.Serialize(writer, (PostalAddressModel)value, options);
+            else
+                throw new NotSupportedException($"Type {value.Type} not supported");
         }
     }
 }

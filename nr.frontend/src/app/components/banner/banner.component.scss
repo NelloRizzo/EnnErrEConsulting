@@ -1,0 +1,18 @@
+@use '../../../mixins';
+
+.banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
+    border-bottom-style:  groove;
+    height: 20vh;
+
+    h1 {
+        text-align: center;
+    }
+    p {
+        color: mixins.$color-accent;
+        text-align: center;
+    }
+}

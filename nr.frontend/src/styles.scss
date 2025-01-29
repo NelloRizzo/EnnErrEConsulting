@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+@use './mixins';
+
+:root {
+    font-size: mixins.$basefontSize;
+    color: mixins.$color-primary;
+    background-color: mixins.$color-background;
+}
+
+body {
+    width: 90vw;
+    margin: 0 auto;
+
+    @include mixins.bodyFont(500, mixins.$basefontSize);
+
+    @for $i from 1 through 6 {
+        h#{$i} {
+            @include mixins.titleFont($weight: 900, $size: calc(mixins.$basefontSize * (1 + (6 - $i) / 3)))
+        }
+    }
+}

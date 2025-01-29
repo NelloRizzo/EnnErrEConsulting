@@ -1,0 +1,28 @@
+@use 'sass:color';
+
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Giga:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+$basefontSize: 1rem;
+
+@mixin titleFont($weight, $size) {
+    font-family: "Lexend Giga", 'Times New Roman', Times, serif;
+    font-optical-sizing: auto;
+    font-weight: $weight;
+    font-style: normal;
+    font-size: $size;
+}
+
+@mixin bodyFont($weight, $size: $basefontSize) {
+    font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: $weight;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+$color-primary: #ecc18b;
+$color-secondary: #508484;
+$color-accent: #97db4f;
+$color-muted: #4d5359;
+$color-background: #4b6959;

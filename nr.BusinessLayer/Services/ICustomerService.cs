@@ -36,7 +36,7 @@ namespace nr.BusinessLayer.Services
         /// Recupera tutte le aziende.
         /// </summary>
         /// <returns>Tutte le aziende.</returns>
-        Task<IEnumerable<CustomerDto>> GetCustomersAsync();
+        Task<IEnumerable<CustomerDto>> GetCompaniesAsync();
         /// <summary>
         /// Recupera tutti i clienti privati.
         /// </summary>
@@ -64,9 +64,9 @@ namespace nr.BusinessLayer.Services
         /// Aggiunge un indirizzo ad un cliente.
         /// </summary>
         /// <param name="customerId">La chiave del cliente.</param>
-        /// <param name="address">I dati dell'indirizzo da aggiungere.</param>
+        /// <param name="addressDto">I dati dell'indirizzo da aggiungere.</param>
         /// <returns>I dati del cliente dopo l'aggiunta dell'indirizzo.</returns>
-        Task<CustomerDto> AddAddressAsync(int customerId, AddressDto address);
+        Task<CustomerDto> AddAddressAsync(int customerId, AddressDto addressDto);
         /// <summary>
         /// Rimuove un indirizzo da un cliente.
         /// </summary>

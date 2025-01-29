@@ -3,7 +3,7 @@
     /// <summary>
     /// Classe base per gli indirizzi.
     /// </summary>
-    public abstract class AddressDto
+    public abstract class AddressDto : BaseDto
     {
         /// <summary>
         /// Indica se si tratta di un indirizzo di lavoro.

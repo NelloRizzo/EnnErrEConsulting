@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.Dto.Customers;
 using nr.BusinessLayer.Dto.Customers.Addresses;
 using nr.BusinessLayer.Dto.Operators;
+using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
 using nr.BusinessLayer.EF.DataLayer.Entities.Customers;
 using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
 using nr.BusinessLayer.EF.DataLayer.Entities.Operators;
@@ -59,6 +61,15 @@ namespace nr.BusinessLayer.EF
             CreateMap<CompanyEntity, CompanyDto>()
                 ;
             CreateMap<PersonEntity, PersonDto>()
+                ;
+            #endregion
+
+            #region Courses
+            CreateMap<CourseDto, CourseEntity>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.Hours : 0))
+                ;
+            CreateMap<CourseEntity, CourseDto>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDuration ?? 0)))
                 ;
             #endregion
         }

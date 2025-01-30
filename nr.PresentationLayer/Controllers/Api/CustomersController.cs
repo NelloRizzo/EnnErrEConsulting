@@ -9,7 +9,7 @@ using nr.PresentationLayer.Controllers.Api.Models.Customers;
 namespace nr.PresentationLayer.Controllers.Api
 {
     /// <summary>
-    /// Controllers per i clienti.
+    /// Endpoint API per la gestione dei clienti.
     /// </summary>
     /// <param name="customerService">Servizio di gestione dei clienti.</param>
     /// <param name="mapper">Mapper di AutoMapper.</param>

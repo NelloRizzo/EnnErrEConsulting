@@ -5,6 +5,7 @@ using nr.BusinessLayer.Dto.Customers.Addresses;
 using nr.PresentationLayer.Controllers.Api.Models.Courses;
 using nr.PresentationLayer.Controllers.Api.Models.Customers;
 using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
+using nr.Utils;
 
 namespace nr.PresentationLayer.Automapper
 {
@@ -76,8 +77,13 @@ namespace nr.PresentationLayer.Automapper
             #endregion
 
             #region Courses
+            CreateMap<CourseDto, NewCourseModel>()
+                .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
+                .ForMember(d => d.Abstract, m => m.MapFrom(s => s.Abstract ?? s.Description.Abstract(255)))
+                ;
             CreateMap<CourseDto, CourseModel>()
                 .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
+                .ForMember(d => d.Abstract, m => m.MapFrom(s => s.Abstract ?? s.Description.Abstract(255)))
                 ;
             CreateMap<CourseModel, CourseDto>()
                 .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDurationHours ?? 0)))

@@ -21,8 +21,14 @@ $basefontSize: 1rem;
     font-variation-settings: "wdth" 100;
 }
 
-$color-primary: #ecc18b;
+$color-primary: #ff8c00;
 $color-secondary: #508484;
-$color-accent: #97db4f;
+$color-accent: #fa0000;
 $color-muted: #4d5359;
-$color-background: #4b6959;
+$color-background: #ffffff;
+
+$color-inv-secondary: #ff8c00;
+$color-inv-background: #508484;
+$color-inv-muted: #fa0000;
+$color-inv-accent: #4d5359;
+$color-inv-primary: #ffffff;

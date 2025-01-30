@@ -1,0 +1,11 @@
+<div class="login-component">
+    <div class="show">
+        <img src='/img/visible.svg' [class]="visible ? 'hidden':''" (click)="toggleVisible()" alt="Login">
+        <img src='/img/hidden.svg' [class]="visible ? '':'hidden'" (click)="toggleVisible()" alt="Chiudi">
+    </div>
+    <div class="form" [class]="visible ? 'visible-form':'hidden-form'">
+        <label for="username">Username</label><input id="username" [(ngModel)]="username">
+        <label for="username">Password</label><input type="password" id="password" [(ngModel)]="password">
+        <button [disabled]="modelValid" (click)="login()">Login</button>
+    </div>
+</div>

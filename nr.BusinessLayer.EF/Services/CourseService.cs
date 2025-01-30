@@ -66,7 +66,7 @@ namespace nr.BusinessLayer.EF.Services
         public async Task<CourseDto> LinkTopicAsync(int courseId, int topicId, int order) {
             try {
                 var course = await context.Courses.FindAsync(courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
-                var topic = await context.Topic.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = topicId };
+                var topic = await context.Topics.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = topicId };
                 course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = courseId, TopicId = topicId, Order = order });
                 await context.SaveChangesAsync();
                 return mapper.Map<CourseDto>(course);

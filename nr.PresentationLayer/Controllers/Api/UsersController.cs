@@ -11,7 +11,7 @@ using System.Text;
 namespace nr.PresentationLayer.Controllers.Api
 {
     /// <summary>
-    /// Controllers per la gestione degli utenti.
+    /// Endpoint API per la gestione degli utenti.
     /// </summary>
     /// <param name="userService">Servizio di gestione degli utenti.</param>
     /// <param name="configuration">Gestore della configurazione.</param>

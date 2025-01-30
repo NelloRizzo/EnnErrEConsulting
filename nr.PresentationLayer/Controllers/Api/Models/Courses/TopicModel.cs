@@ -1,15 +1,16 @@
-﻿using nr.BusinessLayer.Dto.Courses;
+﻿using nr.BusinessLayer.Dto.Attachments;
+using nr.BusinessLayer.Dto.Courses;
 using System.ComponentModel.DataAnnotations;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Courses
 {
-    public class CourseModel
+    public class TopicModel
     {
         /// <summary>
-        /// Nome del corso.
+        /// Titolo.
         /// </summary>
         [Required(AllowEmptyStrings = false), MaxLength(80)]
-        public required string Name { get; set; }
+        public required string Title { get; set; }
         /// <summary>
         /// Descrizione dettagliata.
         /// </summary>
@@ -20,15 +21,17 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
         /// </summary>
         [MaxLength(1024)]
         public string? Abstract { get; set; }
-
-        /// <summary>
-        /// Elenco degli argomenti.
-        /// </summary>
-        public IEnumerable<TopicModel> Topics { get; set; } = [];
-
         /// <summary>
         /// Durata standard in ore.
         /// </summary>
-        public int? StandardDurationHours { get; set; }
+        public virtual int? StandardDurationHours { get; set; }
+        /// <summary>
+        /// Argomenti collegati.
+        /// </summary>
+        public IEnumerable<TopicModel> Topics { get; set; } = [];
+        /// <summary>
+        /// Documenti collegati.
+        /// </summary>
+        //public IEnumerable<LinkDto> Links { get; set; } = [];
     }
 }

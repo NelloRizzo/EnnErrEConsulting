@@ -29,7 +29,7 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Courses
         /// <summary>
         /// Descrizione breve.
         /// </summary>
-        [Required(AllowEmptyStrings = false), MaxLength(1024)]
+        [MaxLength(1024)]
         public string? Abstract { get; set; }
         /// <summary>
         /// Durata standard.

@@ -1,0 +1,59 @@
+@use '../../../mixins';
+@use 'sass:color';
+
+.nav-bar {
+    box-sizing: border-box;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    background-color: mixins.$color-inv-background;
+    color: mixins.$color-inv-primary;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    nav {
+        display: flex;
+        flex-direction: row;
+
+        .logo {
+            align-self: center;
+
+            img {
+                width: 2em;
+                background-color: mixins.$color-inv-primary;
+                padding: .3em;
+                border-radius: 50%;
+                box-shadow: 2px 2px 5px mixins.$color-accent;
+            }
+        }
+
+        ul {
+            user-select: none;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+            li {
+                padding: .3em .5em;
+
+                cursor: pointer;
+                list-style: none;
+                margin: 0 .5em;
+                border-bottom: 1px solid transparent;
+
+                &:hover {
+                    border-bottom: 1px solid mixins.$color-inv-primary;
+                    background-color: color.adjust($color: mixins.$color-accent, $alpha: .5);
+                    background-clip: padding-box;
+                    border-radius: 5px 10px;
+                }
+            }
+        }
+    }
+}
+
+app-login {
+    flex: 1 1 0;
+    align-self: center;
+}

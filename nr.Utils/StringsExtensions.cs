@@ -12,6 +12,13 @@ namespace nr.Utils
             string result = SearchForWord().Replace(input, match => match.Groups[1].Value.ToUpper());
             return char.ToLower(result[0]) + result.Substring(1);
         }
+
+        public static string Abstract(this string input, int maxLen = 255) {
+            if (input.Length < maxLen) return input;
+            int index = maxLen;
+            while (!char.IsPunctuation(input[index]) && index > 0) index--;
+            return $"{(index == 0 ? input[0..maxLen] : input[0..index])}...";
+        }
         public static IEnumerable<(char, int)> EnumerateChars(this string text, int startIndex = 0) {
             for (var i = startIndex; i < text.Length; i++) {
                 yield return (text[i], i);

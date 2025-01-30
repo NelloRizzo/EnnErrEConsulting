@@ -5,7 +5,8 @@
     flex-direction: column;
     justify-content: center;
     align-content: space-between;
-    border-bottom-style:  groove;
+    margin-top: 1em;
+    box-shadow: 2px 2px 4px mixins.$color-muted;
     height: 20vh;
 
     h1 {

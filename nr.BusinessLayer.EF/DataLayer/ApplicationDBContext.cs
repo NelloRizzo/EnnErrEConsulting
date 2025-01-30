@@ -25,7 +25,7 @@ namespace nr.BusinessLayer.EF.DataLayer
         public virtual DbSet<PostalAddressEntity> PostalAddresses { get; set; }
         public virtual DbSet<PhoneNumberAddressEntity> PhoneNumbersAddresses { get; set; }
         public virtual DbSet<CourseEntity> Courses { get; set; }
-        public virtual DbSet<TopicEntity> Topic { get; set; }
+        public virtual DbSet<TopicEntity> Topics { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
     }
 }

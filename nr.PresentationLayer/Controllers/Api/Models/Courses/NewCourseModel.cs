@@ -1,9 +1,8 @@
-﻿using nr.BusinessLayer.Dto.Courses;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Courses
 {
-    public class CourseModel
+    public class NewCourseModel
     {
         /// <summary>
         /// Nome del corso.
@@ -20,12 +19,6 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
         /// </summary>
         [MaxLength(1024)]
         public string? Abstract { get; set; }
-
-        /// <summary>
-        /// Elenco degli argomenti.
-        /// </summary>
-        public IEnumerable<TopicModel> Topics { get; set; } = [];
-
         /// <summary>
         /// Durata standard in ore.
         /// </summary>

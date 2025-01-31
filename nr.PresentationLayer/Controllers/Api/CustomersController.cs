@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using nr.BusinessLayer.Dto.Customers;
 using nr.BusinessLayer.Services;
 using nr.PresentationLayer.Controllers.Api.Models.Customers;
+using System.Net.Mime;
+using System.Reflection;
 
 namespace nr.PresentationLayer.Controllers.Api
 {
@@ -23,7 +25,11 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="personModel">Dati da inserire.</param>
         [HttpPost("person")]
-        public async Task<Results<BadRequest, Ok<PersonModel>>> RegisterPerson([FromBody] PersonModel personModel) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PersonModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<InternalServerError, BadRequest, Ok<PersonModel>>> RegisterPerson([FromBody] PersonModel personModel) {
             if (ModelState.IsValid)
                 try {
                     var person = await customerService.RegisterAsync(mapper.Map<PersonDto>(personModel));
@@ -32,6 +38,7 @@ namespace nr.PresentationLayer.Controllers.Api
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception registering person");
+                    return TypedResults.InternalServerError();
                 }
             return TypedResults.BadRequest();
         }
@@ -41,7 +48,11 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="companyModel">Dati da inserire.</param>
         [HttpPost("company")]
-        public async Task<Results<BadRequest, Ok<CompanyModel>>> RegisterCompany([FromBody] CompanyModel companyModel) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompanyModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<BadRequest, InternalServerError, Ok<CompanyModel>>> RegisterCompany([FromBody] CompanyModel companyModel) {
             if (ModelState.IsValid)
                 try {
                     var company = await customerService.RegisterAsync(mapper.Map<CompanyDto>(companyModel));
@@ -50,6 +61,7 @@ namespace nr.PresentationLayer.Controllers.Api
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception registering company");
+                    return TypedResults.InternalServerError();
                 }
             return TypedResults.BadRequest();
         }
@@ -57,56 +69,68 @@ namespace nr.PresentationLayer.Controllers.Api
         /// Recupera tutti i clienti.
         /// </summary>
         [HttpGet]
-        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomers() {
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CustomerModel>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<InternalServerError, Ok<IEnumerable<CustomerModel>>>> GetAllCustomers() {
             try {
                 var result = await customerService.GetAllAsync();
                 return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception retrieving all customers");
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
         /// <summary>
         /// Recupera tutti i clienti tramite una parte dell'email.
         /// </summary>
         [HttpPost("/by/email")]
-        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByEmail([FromBody] SearchByEmailModel model) {
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CustomerModel>))]
+        [Produces<Ok<IEnumerable<CustomerModel>>>, ProducesErrorResponseType(typeof(BadRequest))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<InternalServerError, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByEmail([FromBody] SearchByEmailModel model) {
             try {
                 var result = await customerService.GetAllByEmailContainsAsync(model.Email);
                 return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception retrieving all customers by email {}", model.Email);
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
         /// <summary>
         /// Recupera tutti i clienti tramite una parte di città e/o provincia.
         /// </summary>
         [HttpPost("/by/city")]
-        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByCity([FromBody] SearchByCityModel model) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CustomerModel>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<InternalServerError, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByCity([FromBody] SearchByCityModel model) {
             try {
                 var result = await customerService.GetAllByCityAndProvinceAsync(model.City, model.Province);
                 return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception retrieving all customers by city {} and province {}", model.City, model.Province);
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
         /// <summary>
         /// Recupera tutti i clienti tramite una parte del nome.
         /// </summary>
         [HttpPost("/by/name")]
-        public async Task<Results<BadRequest, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByName([FromBody] SearchByNameModel model) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CustomerModel>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<InternalServerError, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByName([FromBody] SearchByNameModel model) {
             try {
                 var result = await customerService.GetAllByNameContainsAsync(model.Name);
                 return TypedResults.Ok(mapper.Map<IEnumerable<CustomerModel>>(result));
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception retrieving all customers by name {}", model.Name);
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
     }

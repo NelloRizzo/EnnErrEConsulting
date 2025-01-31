@@ -1,6 +1,4 @@
-﻿using nr.BusinessLayer.Dto.Attachments;
-using nr.BusinessLayer.Dto.Courses;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Courses
 {
@@ -28,7 +26,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
         /// <summary>
         /// Argomenti collegati.
         /// </summary>
-        public IEnumerable<TopicModel> Topics { get; set; } = [];
+        //public IEnumerable<TopicModel> Topics { get; set; } = [];
         /// <summary>
         /// Documenti collegati.
         /// </summary>

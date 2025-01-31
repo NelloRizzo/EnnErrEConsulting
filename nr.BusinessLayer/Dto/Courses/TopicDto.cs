@@ -1,4 +1,5 @@
 ﻿using nr.BusinessLayer.Dto.Attachments;
+using nr.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace nr.BusinessLayer.Dto.Courses
@@ -6,6 +7,7 @@ namespace nr.BusinessLayer.Dto.Courses
     /// <summary>
     /// Un argomento.
     /// </summary>
+    [NotContains(compareField: nameof(Id), collectionField: nameof(InnerTopics), innerProperty: nameof(Id))]
     public class TopicDto : TaggedDto
     {
         /// <summary>
@@ -30,11 +32,11 @@ namespace nr.BusinessLayer.Dto.Courses
         /// <summary>
         /// Durata effettiva basata sulla durata dei singoli argomenti collegati.
         /// </summary>
-        public virtual TimeSpan? EffectiveDuration => TimeSpan.FromHours(Topics.Sum(t => t.StandardDuration?.Hours ?? 0));
+        public virtual TimeSpan? EffectiveDuration => TimeSpan.FromHours(InnerTopics.Sum(t => t.StandardDuration?.Hours ?? 0));
         /// <summary>
         /// Argomenti collegati.
         /// </summary>
-        public IEnumerable<TopicDto> Topics { get; set; } = [];
+        public IEnumerable<TopicDto> InnerTopics { get; set; } = [];
         /// <summary>
         /// Documenti collegati.
         /// </summary>

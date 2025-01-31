@@ -23,5 +23,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
         /// Durata standard in ore.
         /// </summary>
         public int? StandardDurationHours { get; set; }
+        /// <summary>
+        /// Chiavi dei topics allegati nell'ordine in cui compaiono nel programma del corso.
+        /// </summary>
+        public IEnumerable<int> Topics { get; set; } = [];
     }
 }

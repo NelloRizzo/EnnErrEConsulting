@@ -21,6 +21,7 @@ namespace nr.BusinessLayer.EF
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<ICustomerService, CustomerService>()
                 .AddScoped<ICourseService, CourseService>()
+                .AddScoped<ITopicService, TopicService>()
             ;
     }
 }

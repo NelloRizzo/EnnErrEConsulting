@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.Services;
 using nr.PresentationLayer.Controllers.Api.Models.Courses;
+using System.Net.Mime;
+using System.Reflection;
 
 namespace nr.PresentationLayer.Controllers.Api
 {
@@ -22,14 +24,19 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="courseModel">I dati per l'inserimento del corso.</param>
         [HttpPost]
-        public async Task<Results<Ok<CourseModel>, BadRequest>> AddCourse([FromBody] NewCourseModel courseModel) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseModel))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        public async Task<Results<Ok<CourseModel>, InternalServerError, BadRequest>> AddCourse([FromBody] NewCourseModel courseModel) {
             if (ModelState.IsValid)
                 try {
-                    var course = await courseService.AddAsync(mapper.Map<CourseDto>(courseModel));
+                    var course = await courseService.AddAsync(mapper.Map<CourseDto>(courseModel), courseModel.Topics);
                     return TypedResults.Ok(mapper.Map<CourseModel>(course));
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception adding course");
+                    return TypedResults.InternalServerError();
                 }
             return TypedResults.BadRequest();
         }
@@ -38,13 +45,17 @@ namespace nr.PresentationLayer.Controllers.Api
         /// Recupera tutti i corsi.
         /// </summary>
         [HttpGet]
-        public async Task<Results<Ok<IEnumerable<CourseModel>>, BadRequest>> GetAll() {
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CourseModel>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<Ok<IEnumerable<CourseModel>>, InternalServerError>> GetAll() {
             try {
                 return TypedResults.Ok(mapper.Map<IEnumerable<CourseModel>>(await courseService.GetAllAsync()));
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception getting all couses");
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
     }

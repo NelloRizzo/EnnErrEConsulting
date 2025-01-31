@@ -1,16 +1,10 @@
-﻿using Castle.Core.Logging;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.EF.DataLayer;
 using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
 using nr.BusinessLayer.Services;
 using nr.BusinessLayer.Services.Exceptions;
 using nr.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace nr.BusinessLayer.EF.Services
 {
@@ -47,14 +41,14 @@ namespace nr.BusinessLayer.EF.Services
         public Task<TopicDto> GetAsync(int topicId) {
             throw new NotImplementedException();
         }
-
-        public async Task<TopicDto> UpdateAsync(int topicId, TopicDto topicDto) {
+        /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
+        public async Task<TopicDto> UpdateAsync(int topicId, string? summary, string? description) {
             try {
-                if (!topicDto.IsValid()) throw new InvalidDtoException { InvalidDto = topicDto };
                 var topic = await context.Topics.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedKey = topicId, SearchedType = typeof(TopicDto) };
-                
-
-                context.Topics.Add(topic);
+                if (description != null) topic.Description = description;
+                if (summary != null) topic.Abstract = summary;
                 await context.SaveChangesAsync();
                 return mapper.Map<TopicDto>(topic);
             }
@@ -62,7 +56,7 @@ namespace nr.BusinessLayer.EF.Services
                 throw;
             }
             catch (Exception ex) {
-                logger.LogError(ex, "Unattended exception adding topic");
+                logger.LogError(ex, "Unattended exception updating topic {}", topicId);
                 throw new ServiceException(innerException: ex);
             }
         }

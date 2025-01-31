@@ -1,4 +1,5 @@
 ﻿using nr.BusinessLayer.EF.DataLayer.Entities.Attachments;
+using nr.BusinessLayer.EF.DataLayer.Entities.Tags;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -37,15 +38,14 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Courses
         /// <summary>
         /// Argomenti interni.
         /// </summary>
-        public virtual IList<TopicEntity> InnerTopics { get; set; } = [];
+        public virtual IList<InnerTopicEntity> InnerTopics { get; set; } = [];
         /// <summary>
         /// Allegati.
         /// </summary>
         public virtual IList<AttachmentEntity> Attachments { get; set; } = [];
         /// <summary>
-        /// Argomenti.
+        /// Tags.
         /// </summary>
-        // TODO: Probabilmente da sostituirsi con tags.
-        public virtual IList<TopicEntity> Topics { get; set; } = [];
+        public virtual IList<TagEntity> Tags { get; set; } = [];
     }
 }

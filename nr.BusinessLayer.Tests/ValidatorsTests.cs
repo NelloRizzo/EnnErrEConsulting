@@ -40,5 +40,19 @@ namespace nr.BusinessLayer.Tests
             var t = new TestComparerDto { FirstDate = DateOnly.FromDateTime(now), LastDate = DateOnly.FromDateTime(now.AddDays(1)) };
             Assert.That(t.IsValid, Is.True);
         }
+
+        [NotContains(nameof(Id), collectionField: nameof(Items))]
+        class ListContainer : BaseDto
+        {
+            public IEnumerable<int> Items { get; set; } = [];
+        }
+
+        [Test]
+        public void NotContainsAttributeTest() {
+            var target1 = new ListContainer { Id = 1, Items = [1, 2, 3, 4, 5] };
+            var target2 = new ListContainer { Id = 1, Items = [2, 3, 4, 5] };
+            Assert.That(target1.IsValid, Is.False);
+            Assert.That(target2.IsValid, Is.True);
+        }
     }
 }

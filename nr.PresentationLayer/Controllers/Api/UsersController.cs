@@ -5,6 +5,8 @@ using nr.BusinessLayer.Dto.Operators;
 using nr.BusinessLayer.Services;
 using nr.PresentationLayer.Controllers.Api.Models.Users;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mime;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -47,7 +49,11 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="loginModel">Dati di login.</param>
         [HttpPost("login")]
-        public async Task<Results<BadRequest, UnauthorizedHttpResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenModel))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(Missing))]
+        public async Task<Results<InternalServerError, UnauthorizedHttpResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
             try {
                 var user = await userService.LoginUserAsync(loginModel.Username, loginModel.Password);
                 if (user == null) return TypedResults.Unauthorized();
@@ -56,7 +62,7 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception logging user");
-                return TypedResults.BadRequest();
+                return TypedResults.InternalServerError();
             }
         }
 
@@ -65,22 +71,20 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="userModel">Dati dell'utente.</param>
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<BadRequest, InternalServerError, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
-            try {
-                if (ModelState.IsValid)
-                    try {
-                        var user = await userService.RegisterUserAsync(new UserDto { Email = userModel.Email, Password = userModel.Password, Roles = userModel.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
-                        return TypedResults.Ok(new UserModel { Email = user!.Email, Roles = string.Join(',', user.Roles) });
-                    }
-                    catch (Exception ex) {
-                        logger.LogError(ex, "Exception registering user");
-                        return TypedResults.InternalServerError();
-                    }
-            }
-            catch (Exception ex) {
-                logger.LogError(ex, "Exception registering user");
-                return TypedResults.BadRequest();
-            }
+            if (ModelState.IsValid)
+                try {
+                    var user = await userService.RegisterUserAsync(new UserDto { Email = userModel.Email, Password = userModel.Password, Roles = userModel.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
+                    return TypedResults.Ok(new UserModel { Email = user!.Email, Roles = string.Join(',', user.Roles) });
+                }
+                catch (Exception ex) {
+                    logger.LogError(ex, "Exception registering user");
+                    return TypedResults.InternalServerError();
+                }
             logger.LogError("Invalid model: \n{}", string.Join("", ModelState.Select(e => $"\t{e.Key} -> {e.Value}\n")));
             return TypedResults.BadRequest();
         }
@@ -89,6 +93,9 @@ namespace nr.PresentationLayer.Controllers.Api
         /// Ottiene l'elenco di tutti gli utenti.
         /// </summary>
         [HttpGet]
+        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserModel>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<InternalServerError, Ok<IEnumerable<UserModel>>>> GetUsers() {
             try {
                 var users = await userService.GetUsersAsync();

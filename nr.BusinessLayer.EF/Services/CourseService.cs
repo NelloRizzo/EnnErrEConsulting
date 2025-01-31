@@ -6,11 +6,6 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
 using nr.BusinessLayer.Services;
 using nr.BusinessLayer.Services.Exceptions;
 using nr.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace nr.BusinessLayer.EF.Services
 {
@@ -19,12 +14,23 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         /// <exception cref="InvalidDtoException"></exception>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto> AddAsync(CourseDto courseDto) {
+        public async Task<CourseDto> AddAsync(CourseDto courseDto, IEnumerable<int> topicIds) {
             try {
                 if (!courseDto.IsValid()) throw new InvalidDtoException { InvalidDto = courseDto };
+                var trans = await context.Database.BeginTransactionAsync();
                 var course = mapper.Map<CourseEntity>(courseDto);
                 context.Courses.Add(course);
                 await context.SaveChangesAsync();
+                if (topicIds.Any()) {
+                    int order = 10;
+                    foreach (var topicId in topicIds) {
+                        var topic = await context.Topics.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedKey = topicId, SearchedType = typeof(TopicDto) };
+                        course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = course.Id, TopicId = topicId, Order = order });
+                        order += 10;
+                    }
+                    await context.SaveChangesAsync();
+                }
+                await trans.CommitAsync();
                 return mapper.Map<CourseDto>(course);
             }
             catch (ServiceException) {
@@ -47,7 +53,7 @@ namespace nr.BusinessLayer.EF.Services
                 throw new ServiceException(innerException: ex);
             }
         }
-        
+
         /// <inheritdoc/>
         /// <exception cref="ServiceException"></exception>
         public async Task<CourseDto> GetAsync(int courseId) {
@@ -63,19 +69,23 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         /// <exception cref="EntityNotFoundException"></exception>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto> LinkTopicAsync(int courseId, int topicId, int order) {
+        public async Task<CourseDto> LinkTopicAsync(int courseId, int order, params int[] topicIds) {
             try {
                 var course = await context.Courses.FindAsync(courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
-                var topic = await context.Topics.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = topicId };
-                course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = courseId, TopicId = topicId, Order = order });
+                var trans = await context.Database.BeginTransactionAsync();
+                foreach (var id in topicIds) {
+                    var topic = await context.Topics.FindAsync(topicIds) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = id };
+                    course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = courseId, TopicId = id, Order = order });
+                }
                 await context.SaveChangesAsync();
+                await trans.CommitAsync();
                 return mapper.Map<CourseDto>(course);
             }
             catch (ServiceException) {
                 throw;
             }
             catch (Exception ex) {
-                logger.LogError(ex, "Unattended exception linking topic {} to course {}", topicId, courseId);
+                logger.LogError(ex, "Unattended exception linking topic {} to course {}", topicIds, courseId);
                 throw new ServiceException(innerException: ex);
             }
         }

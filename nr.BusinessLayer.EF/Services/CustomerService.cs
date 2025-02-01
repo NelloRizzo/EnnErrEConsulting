@@ -11,7 +11,11 @@ using nr.Validation;
 
 namespace nr.BusinessLayer.EF.Services
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Servizio di gestione dei clienti.
+    /// </summary>
+    /// <param name="logger">Logger.</param>
+    /// <param name="context">Contesto di database.</param>
     public class CustomerService(ILogger<Service> logger, ApplicationDBContext context) : Service(), ICustomerService
     {
         /// <inheritdoc/>

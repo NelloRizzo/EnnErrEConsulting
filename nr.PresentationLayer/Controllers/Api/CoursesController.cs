@@ -5,7 +5,6 @@ using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.Services;
 using nr.PresentationLayer.Controllers.Api.Models.Courses;
 using System.Net.Mime;
-using System.Reflection;
 
 namespace nr.PresentationLayer.Controllers.Api
 {
@@ -25,10 +24,10 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <param name="courseModel">I dati per l'inserimento del corso.</param>
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseModel))]
+        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
-        public async Task<Results<Ok<CourseModel>, InternalServerError, BadRequest>> AddCourse([FromBody] NewCourseModel courseModel) {
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
+        public async Task<Results<Ok<CourseModel>, InternalServerError, BadRequest<string>>> AddCourse([FromBody] NewCourseModel courseModel) {
             if (ModelState.IsValid)
                 try {
                     var course = await courseService.AddAsync(mapper.Map<CourseDto>(courseModel), courseModel.Topics);
@@ -38,7 +37,7 @@ namespace nr.PresentationLayer.Controllers.Api
                     logger.LogError(ex, "Exception adding course");
                     return TypedResults.InternalServerError();
                 }
-            return TypedResults.BadRequest();
+            return TypedResults.BadRequest("Invalid model");
         }
 
         /// <summary>
@@ -46,8 +45,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CourseModel>))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CourseModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<Ok<IEnumerable<CourseModel>>, InternalServerError>> GetAll() {
             try {
@@ -58,7 +56,14 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.InternalServerError();
             }
         }
-
+        /// <summary>
+        /// Collega degli argomenti ad un corso.
+        /// </summary>
+        /// <param name="courseId">Chiave del corso.</param>
+        /// <param name="model">Indicazioni degli argomenti da collegare.</param>
+        /// <returns>Il corso modificato a seguito dell'operazione.</returns>
+        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("{courseId}/Topics/Link")]
         public async Task<Results<Ok<CourseModel>, InternalServerError>> LinkTopics([FromRoute] int courseId, [FromBody] LinkTopicsModel model) {
             try {
@@ -69,6 +74,14 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.InternalServerError();
             }
         }
+        /// <summary>
+        /// Scollega degli argomenti da un corso.
+        /// </summary>
+        /// <param name="courseId">Chiave del corso.</param>
+        /// <param name="model">Indicazioni degli argomenti da scollegare.</param>
+        /// <returns>Il corso modificato a seguito dell'operazione.</returns>
+        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("{courseId}/Topics/Unlink")]
         public async Task<Results<Ok<CourseModel>, InternalServerError>> UnlinkTopics([FromRoute] int courseId, [FromBody] UnlinkTopicModel model) {
             try {

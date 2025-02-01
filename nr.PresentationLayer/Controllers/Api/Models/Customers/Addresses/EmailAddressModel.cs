@@ -8,6 +8,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
     /// </summary>
     public class EmailAddressModel : AddressModel
     {
+        /// <summary>
+        /// Discriminante di tipo.
+        /// </summary>
         internal static readonly string ModelType = nameof(EmailAddressModel).ToCamelCase().Replace("AddressModel", "");
         /// <summary>
         /// L'indirizzo.

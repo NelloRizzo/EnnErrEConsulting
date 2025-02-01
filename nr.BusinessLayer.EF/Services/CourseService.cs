@@ -9,8 +9,17 @@ using nr.Validation;
 
 namespace nr.BusinessLayer.EF.Services
 {
+    /// <summary>
+    /// Servizio di gestione dei corsi.
+    /// </summary>
+    /// <param name="logger">Logger.</param>
+    /// <param name="context">Contesto di database.</param>
     public class CourseService(ILogger<Service> logger, ApplicationDBContext context) : Service(), ICourseService
     {
+        /// <summary>
+        /// Mappa un'entità che rappresenta un corso su un Dto.
+        /// </summary>
+        /// <param name="course">L'entità da mappare.</param>
         private CourseDto Map(CourseEntity course) {
             var dto = mapper.Map<CourseDto>(course);
             dto.Topics = course.Topics.Select(t => t.Topic).Select(mapper.Map<TopicDto>).ToList();

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace nr.PresentationLayer.Controllers.Api.Models.Courses
+﻿namespace nr.PresentationLayer.Controllers.Api.Models.Courses
 {
+    /// <summary>
+    /// Body di response per la restituzione di un argomento.
+    /// </summary>
     public class TopicModel
     {
         /// <summary>
@@ -11,17 +12,14 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
         /// <summary>
         /// Titolo.
         /// </summary>
-        [Required(AllowEmptyStrings = false), MaxLength(80)]
         public required string Title { get; set; }
         /// <summary>
         /// Descrizione dettagliata.
         /// </summary>
-        [Required(AllowEmptyStrings = false), MaxLength(4096)]
         public required string Description { get; set; }
         /// <summary>
         /// Descrizione breve.
         /// </summary>
-        [MaxLength(1024)]
         public string? Abstract { get; set; }
         /// <summary>
         /// Durata standard in ore.

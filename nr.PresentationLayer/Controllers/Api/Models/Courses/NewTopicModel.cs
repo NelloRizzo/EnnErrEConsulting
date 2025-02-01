@@ -2,6 +2,9 @@
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Courses
 {
+    /// <summary>
+    /// Body di request per l'inserimento di un nuovo argomento.
+    /// </summary>
     public class NewTopicModel
     {
         /// <summary>

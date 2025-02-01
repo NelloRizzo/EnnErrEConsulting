@@ -9,7 +9,11 @@ using nr.Validation;
 
 namespace nr.BusinessLayer.EF.Services
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Servizio di gestione degli utenti.
+    /// </summary>
+    /// <param name="logger">Logger.</param>
+    /// <param name="context">Contesto di database.</param>
     public class UserService(ILogger<Service> logger, ApplicationDBContext context) : Service(), IUserService
     {
         /// <inheritdoc/>

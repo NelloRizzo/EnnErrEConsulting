@@ -9,7 +9,12 @@ using nr.Validation;
 
 namespace nr.BusinessLayer.EF.Services
 {
-    public class TopicService(ApplicationDBContext context, ILogger<TopicService> logger) : Service, ITopicService
+    /// <summary>
+    /// Servizio di gestione degli argomenti collegati ai corsi.
+    /// </summary>
+    /// <param name="logger">Logger.</param>
+    /// <param name="context">Contesto di database.</param>
+    public class TopicService(ILogger<TopicService> logger, ApplicationDBContext context) : Service, ITopicService
     {
         /// <inheritdoc/>
         /// <exception cref="InvalidDtoException"></exception>

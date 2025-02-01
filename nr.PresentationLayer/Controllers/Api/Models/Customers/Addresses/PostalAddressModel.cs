@@ -8,11 +8,13 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
     /// </summary>
     public class PostalAddressModel : AddressModel
     {
+        /// <summary>
+        /// Discriminante di tipo.
+        /// </summary>
         internal static readonly string ModelType = nameof(PostalAddressModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// La via.
         /// </summary>
-        // TODO: Probabilmente è necessario cambiare il nome.
         [Required(AllowEmptyStrings = false), MaxLength(125)]
         public required string Street { get; set; }
         /// <summary>

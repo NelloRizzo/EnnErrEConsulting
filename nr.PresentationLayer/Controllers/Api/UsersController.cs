@@ -50,9 +50,9 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <param name="loginModel">Dati di login.</param>
         [HttpPost("login")]
         [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenModel))]
+        [ProducesResponseType(typeof(TokenModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(Missing))]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
         public async Task<Results<InternalServerError, UnauthorizedHttpResult, Ok<TokenModel>>> LoginUser([FromBody] LoginModel loginModel) {
             try {
                 var user = await userService.LoginUserAsync(loginModel.Username, loginModel.Password);
@@ -71,11 +71,11 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="userModel">Dati dell'utente.</param>
         [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserModel))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(UserModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<Results<BadRequest, InternalServerError, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
+        public async Task<Results<BadRequest<string>, InternalServerError, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
             if (ModelState.IsValid)
                 try {
                     var user = await userService.RegisterUserAsync(new UserDto { Email = userModel.Email, Password = userModel.Password, Roles = userModel.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
@@ -86,15 +86,14 @@ namespace nr.PresentationLayer.Controllers.Api
                     return TypedResults.InternalServerError();
                 }
             logger.LogError("Invalid model: \n{}", string.Join("", ModelState.Select(e => $"\t{e.Key} -> {e.Value}\n")));
-            return TypedResults.BadRequest();
+            return TypedResults.BadRequest("Invalid model");
         }
 
         /// <summary>
         /// Ottiene l'elenco di tutti gli utenti.
         /// </summary>
         [HttpGet]
-        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserModel>))]
+        [ProducesResponseType(typeof(IEnumerable<UserModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<InternalServerError, Ok<IEnumerable<UserModel>>>> GetUsers() {
             try {

@@ -27,9 +27,9 @@ namespace nr.PresentationLayer.Controllers.Api
         [HttpPost("person")]
         [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PersonModel))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Missing))]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<Results<InternalServerError, BadRequest, Ok<PersonModel>>> RegisterPerson([FromBody] PersonModel personModel) {
+        public async Task<Results<InternalServerError, BadRequest<string>, Ok<PersonModel>>> RegisterPerson([FromBody] PersonModel personModel) {
             if (ModelState.IsValid)
                 try {
                     var person = await customerService.RegisterAsync(mapper.Map<PersonDto>(personModel));
@@ -40,7 +40,7 @@ namespace nr.PresentationLayer.Controllers.Api
                     logger.LogError(ex, "Exception registering person");
                     return TypedResults.InternalServerError();
                 }
-            return TypedResults.BadRequest();
+            return TypedResults.BadRequest("Invalid model");
         }
 
         /// <summary>

@@ -5,6 +5,10 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Courses
     public class TopicModel
     {
         /// <summary>
+        /// Chiave.
+        /// </summary>
+        public int Id { get; set; }
+        /// <summary>
         /// Titolo.
         /// </summary>
         [Required(AllowEmptyStrings = false), MaxLength(80)]

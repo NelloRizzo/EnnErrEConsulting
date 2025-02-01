@@ -11,6 +11,11 @@ namespace nr.BusinessLayer.EF.Services
 {
     public class CourseService(ILogger<Service> logger, ApplicationDBContext context) : Service(), ICourseService
     {
+        private CourseDto Map(CourseEntity course) {
+            var dto = mapper.Map<CourseDto>(course);
+            dto.Topics = course.Topics.Select(t => t.Topic).Select(mapper.Map<TopicDto>).ToList();
+            return dto;
+        }
         /// <inheritdoc/>
         /// <exception cref="InvalidDtoException"></exception>
         /// <exception cref="ServiceException"></exception>
@@ -31,7 +36,7 @@ namespace nr.BusinessLayer.EF.Services
                     await context.SaveChangesAsync();
                 }
                 await trans.CommitAsync();
-                return mapper.Map<CourseDto>(course);
+                return Map(course);
             }
             catch (ServiceException) {
                 throw;
@@ -46,7 +51,7 @@ namespace nr.BusinessLayer.EF.Services
         /// <exception cref="ServiceException"></exception>
         public async Task<IEnumerable<CourseDto>> GetAllAsync() {
             try {
-                return mapper.Map<IEnumerable<CourseDto>>(await context.Courses.ToListAsync());
+                return (await context.Courses.ToListAsync()).Select(Map);
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Unattended exception getting all courses");
@@ -56,9 +61,11 @@ namespace nr.BusinessLayer.EF.Services
 
         /// <inheritdoc/>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto> GetAsync(int courseId) {
+        public async Task<CourseDto?> GetAsync(int courseId) {
             try {
-                return mapper.Map<CourseDto>(await context.Courses.FindAsync(courseId));
+                var course = await context.Courses.FindAsync(courseId);
+                if (course == null) return null;
+                return Map(course);
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Unattended exception getting course {}", courseId);
@@ -69,17 +76,17 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         /// <exception cref="EntityNotFoundException"></exception>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto> LinkTopicAsync(int courseId, int order, params int[] topicIds) {
+        public async Task<CourseDto> LinkTopicAsync(int courseId, int order, IEnumerable<int> topicIds) {
             try {
-                var course = await context.Courses.FindAsync(courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
+                var course = await context.Courses.SingleOrDefaultAsync(c => c.Id == courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
                 var trans = await context.Database.BeginTransactionAsync();
                 foreach (var id in topicIds) {
-                    var topic = await context.Topics.FindAsync(topicIds) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = id };
-                    course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = courseId, TopicId = id, Order = order });
+                    var topic = await context.Topics.FindAsync(id) ?? throw new EntityNotFoundException { SearchedType = typeof(TopicDto), SearchedKey = id };
+                    course.Topics.Add(new CourseTopicEntity { Course = course, Topic = topic, CourseId = courseId, TopicId = topic.Id, Order = order });
                 }
                 await context.SaveChangesAsync();
                 await trans.CommitAsync();
-                return mapper.Map<CourseDto>(course);
+                return Map(course);
             }
             catch (ServiceException) {
                 throw;
@@ -93,21 +100,23 @@ namespace nr.BusinessLayer.EF.Services
         /// <inheritdoc/>
         /// <exception cref="EntityNotFoundException"></exception>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto> UnlinkTopicAsync(int courseId, int topicId) {
+        public async Task<CourseDto> UnlinkTopicAsync(int courseId, IEnumerable<int> topicIds) {
             try {
                 var course = await context.Courses.FindAsync(courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
-                var topic = course.Topics.FirstOrDefault(t => t.TopicId == topicId);
-                if (topic != null) {
-                    course.Topics.Remove(topic);
-                    await context.SaveChangesAsync();
+                foreach (var id in topicIds) {
+                    var topic = course.Topics.FirstOrDefault(t => t.TopicId == id);
+                    if (topic != null) {
+                        course.Topics.Remove(topic);
+                    }
                 }
-                return mapper.Map<CourseDto>(course);
+                await context.SaveChangesAsync();
+                return Map(course);
             }
             catch (ServiceException) {
                 throw;
             }
             catch (Exception ex) {
-                logger.LogError(ex, "Unattended exception unlinking topic {} from course {}", topicId, courseId);
+                logger.LogError(ex, "Unattended exception unlinking topics {} from course {}", topicIds, courseId);
                 throw new ServiceException(innerException: ex);
             }
         }

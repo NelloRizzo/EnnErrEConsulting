@@ -25,7 +25,7 @@ namespace nr.BusinessLayer.Dto.Courses
         /// <summary>
         /// Elenco degli argomenti.
         /// </summary>
-        public IEnumerable<CourseTopicDto> Topics { get; set; } = [];
+        public IEnumerable<TopicDto> Topics { get; set; } = [];
         /// <summary>
         /// Durata standard.
         /// </summary>
@@ -33,6 +33,6 @@ namespace nr.BusinessLayer.Dto.Courses
         /// <summary>
         /// Durata effettiva calcolando le durate degli argomenti.
         /// </summary>
-        public TimeSpan EffectiveDuration => TimeSpan.FromHours(Topics.Sum(t => t.Topic.EffectiveDuration?.Hours ?? 0));
+        public TimeSpan EffectiveDuration => TimeSpan.FromHours(Topics.Sum(t => t.EffectiveDuration?.Hours ?? 0));
     }
 }

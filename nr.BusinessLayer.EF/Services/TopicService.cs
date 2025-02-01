@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.EF.DataLayer;
 using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
@@ -29,17 +30,49 @@ namespace nr.BusinessLayer.EF.Services
                 throw new ServiceException(innerException: ex);
             }
         }
+        /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
+        public async Task<TopicDto> DeleteAsync(int topicId) {
+            try {
+                var topic = await context.Topics.FindAsync(topicId) ?? throw new EntityNotFoundException { SearchedKey = topicId, SearchedType = typeof(TopicDto) };
+                context.Topics.Remove(topic);
+                return mapper.Map<TopicDto>(topic);
+            }
+            catch (ServiceException) {
+                throw;
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception deleting topic {}", topicId);
+                throw new ServiceException(innerException: ex);
+            }
 
-        public Task<TopicDto> DeleteAsync(int topicId) {
-            throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TopicDto>> GetAllAsync() {
-            throw new NotImplementedException();
+        /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
+        public async Task<IEnumerable<TopicDto>> GetAllAsync() {
+            try {
+                var result = await context.Topics.ToListAsync();
+                return mapper.Map<IEnumerable<TopicDto>>(result);
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception retrieving all topics");
+                throw new ServiceException(innerException: ex);
+            }
         }
 
-        public Task<TopicDto> GetAsync(int topicId) {
-            throw new NotImplementedException();
+        /// <inheritdoc/>
+        /// <exception cref="ServiceException"></exception>
+        public async Task<TopicDto?> GetAsync(int topicId) {
+            try {
+                var result = await context.Topics.FindAsync(topicId);
+                return mapper.Map<TopicDto>(result);
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception retrieving all topics");
+                throw new ServiceException(innerException: ex);
+            }
         }
         /// <inheritdoc/>
         /// <exception cref="EntityNotFoundException"></exception>

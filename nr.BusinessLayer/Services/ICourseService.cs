@@ -22,18 +22,19 @@ namespace nr.BusinessLayer.Services
         /// <param name="order">L'indice da cui inserire gli argomenti nel programma del corso.</param>
         /// <param name="topicIds">Le chiavi degli argomenti da aggiungere.</param>
         /// <returns>Il corso dopo l'inserimento.</returns>
-        Task<CourseDto> LinkTopicAsync(int courseId, int order, params int[] topicIds);
+        Task<CourseDto> LinkTopicAsync(int courseId, int order, IEnumerable<int> topicIds);
         /// <summary>
         /// Elimina un argomento dal corso.
         /// </summary>
         /// <param name="courseId">La chiave del corso.</param>
-        /// <param name="topicId">La chiave dell'argomento.</param>
+        /// <param name="topicIds">La chiave dell'argomento.</param>
         /// <returns>Il corso dopo l'eliminazione.</returns>
-        Task<CourseDto> UnlinkTopicAsync(int courseId, int topicId);
+        Task<CourseDto> UnlinkTopicAsync(int courseId, IEnumerable<int> topicIds);
         /// <summary>
         /// Recupera i dati di un corso.
         /// </summary>
         /// <param name="courseId">La chiave del corso.</param>
-        Task<CourseDto> GetAsync(int courseId);
+        /// <returns>Il corso desiderato o <em>null</em> se il corso non esiste.</returns>
+        Task<CourseDto?> GetAsync(int courseId);
     }
 }

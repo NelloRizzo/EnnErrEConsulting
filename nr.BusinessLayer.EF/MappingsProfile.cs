@@ -70,6 +70,16 @@ namespace nr.BusinessLayer.EF
                 ;
             CreateMap<CourseEntity, CourseDto>()
                 .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDuration ?? 0)))
+                .ForMember(d => d.Topics, m => m.Ignore())
+                ;
+            #endregion
+
+            #region Topics
+            CreateMap<TopicDto, TopicEntity>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.Hours : 0))
+                ;
+            CreateMap<TopicEntity, TopicDto>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => new TimeSpan(s.StandardDuration ?? 0)))
                 ;
             #endregion
         }

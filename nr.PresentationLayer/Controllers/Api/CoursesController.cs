@@ -58,5 +58,26 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.InternalServerError();
             }
         }
+
+        [HttpPost("{courseId}/Topics/Link")]
+        public async Task<Results<Ok<CourseModel>, InternalServerError>> LinkTopics([FromRoute] int courseId, [FromBody] LinkTopicsModel model) {
+            try {
+                return TypedResults.Ok(mapper.Map<CourseModel>(await courseService.LinkTopicAsync(courseId, model.Order, model.TopicIds)));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception linking topics {} to course {}", model.TopicIds, courseId);
+                return TypedResults.InternalServerError();
+            }
+        }
+        [HttpPost("{courseId}/Topics/Unlink")]
+        public async Task<Results<Ok<CourseModel>, InternalServerError>> UnlinkTopics([FromRoute] int courseId, [FromBody] UnlinkTopicModel model) {
+            try {
+                return TypedResults.Ok(mapper.Map<CourseModel>(await courseService.UnlinkTopicAsync(courseId, model.TopicIds)));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception linking topics {} to course {}", model.TopicIds, courseId);
+                return TypedResults.InternalServerError();
+            }
+        }
     }
 }

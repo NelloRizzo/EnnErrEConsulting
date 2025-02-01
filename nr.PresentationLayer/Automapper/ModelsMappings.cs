@@ -77,16 +77,29 @@ namespace nr.PresentationLayer.Automapper
             #endregion
 
             #region Courses
-            CreateMap<CourseDto, NewCourseModel>()
-                .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
-                .ForMember(d => d.Abstract, m => m.MapFrom(s => s.Abstract ?? s.Description.Abstract(255)))
+            CreateMap<NewCourseModel, CourseDto>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDurationHours ?? 0)))
+                .ForMember(d => d.Topics, m => m.Ignore())
                 ;
+            
             CreateMap<CourseDto, CourseModel>()
                 .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
                 .ForMember(d => d.Abstract, m => m.MapFrom(s => s.Abstract ?? s.Description.Abstract(255)))
                 ;
             CreateMap<CourseModel, CourseDto>()
                 .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDurationHours ?? 0)))
+                ;
+            #endregion
+
+            #region Topics
+            CreateMap<NewTopicModel, TopicDto>()
+                .ForMember(d => d.StandardDuration, m => m.MapFrom(s => TimeSpan.FromHours(s.StandardDurationHours ?? 0)))
+                ;
+            CreateMap<TopicDto, TopicModel>()
+                .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
+                ;
+            CreateMap<TopicDto, NewTopicModel>()
+                .ForMember(d => d.StandardDurationHours, m => m.MapFrom(s => s.StandardDuration.HasValue ? s.StandardDuration.Value.TotalHours : 0))
                 ;
             #endregion
         }

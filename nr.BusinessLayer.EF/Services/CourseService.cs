@@ -70,11 +70,13 @@ namespace nr.BusinessLayer.EF.Services
 
         /// <inheritdoc/>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CourseDto?> GetAsync(int courseId) {
+        public async Task<CourseDto> GetAsync(int courseId) {
             try {
-                var course = await context.Courses.FindAsync(courseId);
-                if (course == null) return null;
+                var course = await context.Courses.FindAsync(courseId) ?? throw new EntityNotFoundException { SearchedKey = courseId, SearchedType = typeof(CourseDto) };
                 return Map(course);
+            }
+            catch (ServiceException) {
+                throw;
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Unattended exception getting course {}", courseId);

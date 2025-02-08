@@ -6,7 +6,6 @@ using nr.BusinessLayer.Services;
 using nr.PresentationLayer.Controllers.Api.Models.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -22,6 +21,8 @@ namespace nr.PresentationLayer.Controllers.Api
     [ApiController]
     public class UsersController(IUserService userService, IConfiguration configuration, ILogger<UsersController> logger) : ApiControllerBase()
     {
+        const string CREATED_AT_ROUTE = $"{nameof(UsersController)}_{nameof(GetUserById)}";
+
         /// <summary>
         /// Genera il token JWT.
         /// </summary>
@@ -49,7 +50,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// </summary>
         /// <param name="loginModel">Dati di login.</param>
         [HttpPost("login")]
-        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(TokenModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -75,11 +76,11 @@ namespace nr.PresentationLayer.Controllers.Api
         [ProducesResponseType(typeof(UserModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<Results<BadRequest<string>, InternalServerError, Ok<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
+        public async Task<Results<BadRequest<string>, InternalServerError, CreatedAtRoute<UserModel>>> RegisterUser([FromBody] RegisterUserModel userModel) {
             if (ModelState.IsValid)
                 try {
                     var user = await userService.RegisterUserAsync(new UserDto { Email = userModel.Email, Password = userModel.Password, Roles = userModel.Roles?.Split(' ', ',').Select(r => r.Trim()) ?? [] });
-                    return TypedResults.Ok(new UserModel { Email = user!.Email, Roles = string.Join(',', user.Roles) });
+                    return TypedResults.CreatedAtRoute(new UserModel { Email = user!.Email, Roles = string.Join(',', user.Roles) }, CREATED_AT_ROUTE, new { userId = user.Id });
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception registering user");
@@ -99,6 +100,23 @@ namespace nr.PresentationLayer.Controllers.Api
             try {
                 var users = await userService.GetUsersAsync();
                 return TypedResults.Ok(users.Select(u => new UserModel { Email = u.Email, Roles = string.Join(',', u.Roles) }));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception getting users");
+                return TypedResults.InternalServerError();
+            }
+        }
+        /// <summary>
+        /// Recupera un utente tramite la chiave.
+        /// </summary>
+        /// <param name="userId">Chiave dell'utente.</param>
+        [HttpGet("{userId}", Name = CREATED_AT_ROUTE)]
+        [ProducesResponseType(typeof(UserModel), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<Ok<UserModel>, UnauthorizedHttpResult, InternalServerError>> GetUserById([FromRoute] int userId) {
+            try {
+                var user = await userService.GetUserByIdAsync(userId);
+                return TypedResults.Ok(new UserModel { Email = user.Email, Roles = string.Join(',', user.Roles) });
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception getting users");

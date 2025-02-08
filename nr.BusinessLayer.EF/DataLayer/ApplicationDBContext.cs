@@ -4,6 +4,7 @@ using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
 using nr.BusinessLayer.EF.DataLayer.Entities.Customers;
 using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
 using nr.BusinessLayer.EF.DataLayer.Entities.Operators;
+using nr.BusinessLayer.EF.DataLayer.Entities.Planning;
 using nr.BusinessLayer.EF.DataLayer.Entities.Tags;
 
 namespace nr.BusinessLayer.EF.DataLayer
@@ -27,5 +28,10 @@ namespace nr.BusinessLayer.EF.DataLayer
         public virtual DbSet<CourseEntity> Courses { get; set; }
         public virtual DbSet<TopicEntity> Topics { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
+        public virtual DbSet<LinkEntity> Links { get; set; }
+        public virtual DbSet<UrlLinkEntity> UrlLinks { get; set; }
+        public virtual DbSet<ContentLinkEntity> EmbeddedLinks { get; set; }
+        public virtual DbSet<CoursePlanEntity> Planning {  get; set; }
+        public virtual DbSet<PlanDateEntity> PlanningDates {  get; set; }
     }
 }

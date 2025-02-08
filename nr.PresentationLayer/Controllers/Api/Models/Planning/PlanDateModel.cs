@@ -1,17 +1,17 @@
 ﻿using nr.Validation;
 
-namespace nr.BusinessLayer.Dto.Planning
+namespace nr.PresentationLayer.Controllers.Api.Models.Planning
 {
     /// <summary>
     /// Una data di erogazione.
     /// </summary>
     [LessThan<TimeOnly>(nameof(StartTime), nameof(EndTime))]
-    public class PlanDateDto : BaseDto
+    public class PlanDateModel
     {
         /// <summary>
-        /// Chiave del corso collegato.
+        /// 
         /// </summary>
-        public int CourseId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Data.
         /// </summary>
@@ -19,10 +19,10 @@ namespace nr.BusinessLayer.Dto.Planning
         /// <summary>
         /// Orario di inizio.
         /// </summary>
-        public required TimeOnly StartTime { get; set; }
+        public TimeOnly? StartTime { get; set; }
         /// <summary>
         /// Orario di fine.
         /// </summary>
-        public required TimeOnly EndTime { get; set; }
+        public TimeOnly? EndTime { get; set; }
     }
 }

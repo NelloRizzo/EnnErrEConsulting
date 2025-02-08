@@ -1,14 +1,14 @@
-﻿using nr.BusinessLayer.Dto.Courses;
-using nr.BusinessLayer.Dto.Customers;
-using System.ComponentModel.DataAnnotations;
-
-namespace nr.BusinessLayer.Dto.Planning
+﻿namespace nr.PresentationLayer.Controllers.Api.Models.Planning
 {
     /// <summary>
     /// Pianificazione di un corso.
     /// </summary>
-    public class CoursePlanDto : BaseDto
+    public class CoursePlanModel
     {
+        /// <summary>
+        /// Chiave.
+        /// </summary>
+        public int Id { get; set; }
         /// <summary>
         /// Corso.
         /// </summary>
@@ -20,6 +20,6 @@ namespace nr.BusinessLayer.Dto.Planning
         /// <summary>
         /// Date di erogazione.
         /// </summary>
-        public IEnumerable<PlanDateDto> Dates { get; set; } = [];
+        public IEnumerable<PlanDateModel> Dates { get; set; } = [];
     }
 }

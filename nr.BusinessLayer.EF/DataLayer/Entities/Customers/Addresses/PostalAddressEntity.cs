@@ -12,7 +12,6 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses
         /// <summary>
         /// Via.
         /// </summary>
-        // TODO: Cambiare il nome in Street
         [Required(AllowEmptyStrings = false), MaxLength(125)]
         public required string Street { get; set; }
         /// <summary>

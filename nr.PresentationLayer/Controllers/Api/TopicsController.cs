@@ -18,20 +18,22 @@ namespace nr.PresentationLayer.Controllers.Api
     [ApiController]
     public class TopicsController(ITopicService topicService, IMapper mapper, ILogger<TopicsController> logger) : ApiControllerBase
     {
+        const string CREATED_AT_ROUTE = $"{nameof(TopicsController)}_{nameof(GetTopicById)}";
         /// <summary>
         /// Aggiunge un argomento.
         /// </summary>
         /// <param name="topic">I dati da inserire.</param>
         /// <returns>L'argomento inserito.</returns>
         [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(TopicModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(TopicModel), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
-        public async Task<Results<Ok<TopicModel>, BadRequest, InternalServerError>> Add(NewTopicModel topic) {
+        public async Task<Results<CreatedAtRoute<TopicModel>, BadRequest, InternalServerError>> Add(NewTopicModel topic) {
             if (ModelState.IsValid) {
                 try {
-                    return TypedResults.Ok(mapper.Map<TopicModel>(await topicService.AddAsync(mapper.Map<TopicDto>(topic))));
+                    var t = await topicService.AddAsync(mapper.Map<TopicDto>(topic));
+                    return TypedResults.CreatedAtRoute(mapper.Map<TopicModel>(t), CREATED_AT_ROUTE, new { topicId = t.Id });
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception adding topic");
@@ -44,8 +46,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// Recupera tutti gli argomenti.
         /// </summary>
         [HttpGet]
-        [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TopicModel>))]
+        [ProducesResponseType(typeof(IEnumerable<TopicModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<Ok<IEnumerable<TopicModel>>, InternalServerError>> GetAll() {
             try {
@@ -53,6 +54,22 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception retrieving all topics");
+            }
+            return TypedResults.InternalServerError();
+        }
+        /// <summary>
+        /// Recupera un argomento tramite la chiave.
+        /// </summary>
+        /// <param name="topicId">Chiave dell'argomento.</param>
+        [HttpGet("{topicId}", Name = CREATED_AT_ROUTE)]
+        [ProducesResponseType(typeof(TopicModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<Ok<TopicModel>, InternalServerError>> GetTopicById([FromRoute] int topicId) {
+            try {
+                return TypedResults.Ok(mapper.Map<TopicModel>(await topicService.GetAsync(topicId)));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving topic {}", topicId);
             }
             return TypedResults.InternalServerError();
         }

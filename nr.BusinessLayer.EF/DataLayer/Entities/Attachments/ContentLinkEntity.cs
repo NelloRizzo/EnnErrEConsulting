@@ -12,7 +12,7 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Attachments
         /// <summary>
         /// Il contenuto trasformato in bytes.
         /// </summary>
-        [Required, MaxLength(8192)]
+        [Required, MaxLength(1 * 1000000)]
         public required byte[] Content { get; set; }
     }
 }

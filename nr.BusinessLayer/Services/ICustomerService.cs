@@ -58,8 +58,8 @@ namespace nr.BusinessLayer.Services
         /// Recupera un cliente.
         /// </summary>
         /// <param name="id">La chiave del cliente.</param>
-        /// <returns>Il cliente che corrisponde alla chiave oppure il valore <strong>null</strong>.</returns>
-        Task<CustomerDto?> GetByIdAsync(int id);
+        /// <returns>Il cliente che corrisponde alla chiave.</returns>
+        Task<CustomerDto> GetByIdAsync(int id);
         /// <summary>
         /// Aggiunge un indirizzo ad un cliente.
         /// </summary>

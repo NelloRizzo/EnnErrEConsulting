@@ -101,9 +101,12 @@ namespace nr.BusinessLayer.EF.Services
 
         /// <inheritdoc/>
         /// <exception cref="ServiceException"></exception>
-        public async Task<CustomerDto?> GetByIdAsync(int id) {
+        public async Task<CustomerDto> GetByIdAsync(int id) {
             try {
-                return mapper.Map<CustomerDto?>(await context.Customers.FindAsync(id));
+                return mapper.Map<CustomerDto>(await context.Customers.FindAsync(id) ?? throw new EntityNotFoundException { SearchedKey = id, SearchedType = typeof(CustomerDto) });
+            }
+            catch (ServiceException) {
+                throw;
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Unattended exception retrieving customer by id {}", id);

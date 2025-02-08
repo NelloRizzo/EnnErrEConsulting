@@ -28,7 +28,7 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Planning
         /// Il corso.
         /// </summary>
         [Required, ForeignKey(nameof(CourseId))]
-        public required CourseEntity Course { get; set; }
+        public virtual required CourseEntity Course { get; set; }
         /// <summary>
         /// Il cliente.
         /// </summary>

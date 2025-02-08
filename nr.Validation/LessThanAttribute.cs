@@ -13,9 +13,13 @@ namespace nr.Validation
     {
         public override bool IsValid(object? value) {
             if (value == null) return true;
-            var v1 = (T)value.GetType().GetProperties().Single(p => p.Name == compareField).GetValue(value)!;
-            var v2 = (T)value.GetType().GetProperties().Single(p => p.Name == targetField).GetValue(value)!;
-            return v1.CompareTo(v2) < 0;
+            var p1 = value.GetType().GetProperties().Single(p => p.Name == compareField);
+            var p2 = value.GetType().GetProperties().Single(p => p.Name == targetField);
+
+            var v1 = p1.GetValue(value);
+            var v2 = p2.GetValue(value);
+            if (v1 == null || v2 == null) return true;
+            return ((T)v1).CompareTo((T)v2) < 0;
         }
     }
 }

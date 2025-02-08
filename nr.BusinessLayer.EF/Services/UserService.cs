@@ -189,5 +189,22 @@ namespace nr.BusinessLayer.EF.Services
                 throw new ServiceException(innerException: ex);
             }
         }
+
+        /// <inheritdoc/>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="ServiceException"></exception>
+        public async Task<UserDto> GetUserByIdAsync(int userId) {
+            try {
+                var user = await context.Users.SingleOrDefaultAsync(u => u.Id == userId) ?? throw new EntityNotFoundException { SearchedKey = userId, SearchedType = typeof(UserDto) };
+                return mapper.Map<UserDto>(user);
+            }
+            catch (ServiceException) {
+                throw;
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Unattended exception in {}", nameof(GetUserByUsernameAsync));
+                throw new ServiceException(innerException: ex);
+            }
+        }
     }
 }

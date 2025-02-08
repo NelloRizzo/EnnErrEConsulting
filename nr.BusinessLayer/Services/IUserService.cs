@@ -29,6 +29,12 @@ namespace nr.BusinessLayer.Services
         /// <returns>L'utente corrispondente allo username passato come parametro.</returns>
         Task<UserDto?> GetUserByUsernameAsync(string username);
         /// <summary>
+        /// Recupera un utente a partire dallo username.
+        /// </summary>
+        /// <param name="userId">La chiave dell'utente.</param>
+        /// <returns>L'utente corrispondente alla chiave passata come parametro.</returns>
+        Task<UserDto> GetUserByIdAsync(int userId);
+        /// <summary>
         /// Recupera l'elenco degli utenti.
         /// </summary>
         /// <returns>Tutti gli utenti.</returns>

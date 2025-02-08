@@ -18,20 +18,21 @@ namespace nr.PresentationLayer.Controllers.Api
     [ApiController]
     public class CoursesController(ICourseService courseService, IMapper mapper, ILogger<CoursesController> logger) : ApiControllerBase
     {
+        const string CREATED_AT_ROUTE = $"{nameof(CoursesController)}_{nameof(GetCourseById)}";
         /// <summary>
         /// Aggiunge un corso.
         /// </summary>
         /// <param name="courseModel">I dati per l'inserimento del corso.</param>
         [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
-        public async Task<Results<Ok<CourseModel>, InternalServerError, BadRequest<string>>> AddCourse([FromBody] NewCourseModel courseModel) {
+        public async Task<Results<CreatedAtRoute<CourseModel>, InternalServerError, BadRequest<string>>> AddCourse([FromBody] NewCourseModel courseModel) {
             if (ModelState.IsValid)
                 try {
                     var course = await courseService.AddAsync(mapper.Map<CourseDto>(courseModel), courseModel.Topics);
-                    return TypedResults.Ok(mapper.Map<CourseModel>(course));
+                    return TypedResults.CreatedAtRoute(mapper.Map<CourseModel>(course), CREATED_AT_ROUTE, new { courseId = course.Id });
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception adding course");
@@ -44,7 +45,6 @@ namespace nr.PresentationLayer.Controllers.Api
         /// Recupera tutti i corsi.
         /// </summary>
         [HttpGet]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(IEnumerable<CourseModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<Ok<IEnumerable<CourseModel>>, InternalServerError>> GetAll() {
@@ -62,6 +62,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <param name="courseId">Chiave del corso.</param>
         /// <param name="model">Indicazioni degli argomenti da collegare.</param>
         /// <returns>Il corso modificato a seguito dell'operazione.</returns>
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("{courseId}/Topics/Link")]
@@ -80,6 +81,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <param name="courseId">Chiave del corso.</param>
         /// <param name="model">Indicazioni degli argomenti da scollegare.</param>
         /// <returns>Il corso modificato a seguito dell'operazione.</returns>
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("{courseId}/Topics/Unlink")]
@@ -89,6 +91,23 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception linking topics {} to course {}", model.TopicIds, courseId);
+                return TypedResults.InternalServerError();
+            }
+        }
+
+        /// <summary>
+        /// Recupera un corso.
+        /// </summary>
+        /// <param name="courseId">Chiave del corso.</param>
+        [ProducesResponseType(typeof(CourseModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("{courseId}", Name = CREATED_AT_ROUTE)]
+        public async Task<Results<Ok<CourseModel>, InternalServerError>> GetCourseById([FromRoute] int courseId) {
+            try {
+                return TypedResults.Ok(mapper.Map<CourseModel>(await courseService.GetAsync(courseId)));
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception retrieving course with id {}", courseId);
                 return TypedResults.InternalServerError();
             }
         }

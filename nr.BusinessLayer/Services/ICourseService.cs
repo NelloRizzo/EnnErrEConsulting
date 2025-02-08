@@ -34,7 +34,7 @@ namespace nr.BusinessLayer.Services
         /// Recupera i dati di un corso.
         /// </summary>
         /// <param name="courseId">La chiave del corso.</param>
-        /// <returns>Il corso desiderato o <em>null</em> se il corso non esiste.</returns>
-        Task<CourseDto?> GetAsync(int courseId);
+        /// <returns>Il corso desiderato.</returns>
+        Task<CourseDto> GetAsync(int courseId);
     }
 }

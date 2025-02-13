@@ -1,0 +1,12 @@
+<div class="admin-home">
+  <div class="card" *ngFor="let card of cards">
+    <a href="{{card.link}}">
+      <div class="card-header">
+        <h2>{{card.title}}</h2>
+      </div>
+      <div class="card-body">
+        <p>{{card.description}}</p>
+      </div>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.customers {
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+
+    h1{
+        text-align: center;
+    }
+
+    .controls {
+        text-align: center;
+    }
+}
+
+app-show-customer-item {
+    flex: 1 1 0;
+}

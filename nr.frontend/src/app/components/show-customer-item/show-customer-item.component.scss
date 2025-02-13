@@ -1,0 +1,21 @@
+.customer {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+
+    .icon {
+        flex: 0;
+        margin-right: 10px;
+    }
+
+    .name {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        flex: 0;
+    }
+}

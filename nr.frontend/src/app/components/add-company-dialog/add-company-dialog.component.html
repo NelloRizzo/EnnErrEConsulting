@@ -1,0 +1,61 @@
+<div class="add-person-dialog">
+    <h2 mat-dialog-title>Inserimento Persona</h2>
+    <mat-dialog-content>
+        <form [formGroup]="dataForm" class="form">
+            <div class="form-row">
+                <mat-form-field class="flex-item">
+                    <mat-label>Denominazione</mat-label>
+                    <input matInput formControlName="companyName">
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field class="flex-item">
+                    <mat-label>Codice Fiscale</mat-label>
+                    <input matInput formControlName="fiscalCode">
+                </mat-form-field>
+                <mat-form-field class="flex-item">
+                    <mat-label>Partita IVA</mat-label>
+                    <input matInput formControlName="vatCode">
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field class="flex-item">
+                    <mat-label>Pec</mat-label>
+                    <input matInput formControlName="pec">
+                </mat-form-field>
+                <mat-form-field class="flex-item">
+                    <mat-label>SDI</mat-label>
+                    <input matInput formControlName="sdi">
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field class="flex-item">
+                    <mat-label>Via</mat-label>
+                    <input matInput formControlName="street">
+                </mat-form-field>
+                <mat-form-field class="flex-item-small">
+                    <mat-label>N.</mat-label>
+                    <input matInput formControlName="civicNumber">
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field class="flex-item-small">
+                    <mat-label>C.A.P.</mat-label>
+                    <input matInput formControlName="postalCode">
+                </mat-form-field>
+                <mat-form-field class="flex-item">
+                    <mat-label>Città</mat-label>
+                    <input matInput formControlName="city">
+                </mat-form-field>
+                <mat-form-field class="flex-item-small">
+                    <mat-label>Pr.</mat-label>
+                    <input matInput formControlName="region">
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">Annulla</button>
+        <button mat-button (click)="onSubmit()">Salva</button>
+    </mat-dialog-actions>
+</div>

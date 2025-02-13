@@ -1,0 +1,15 @@
+<div class="customers">
+  <h1>Elenco Clienti</h1>
+  <div class="controls">
+    <button mat-button class="button" (click)="addCompanyDialog()">Aggiungi Azienda</button>
+    <button mat-button class="button" (click)="addPersonDialog()">Aggiungi Persona</button>
+  </div>
+  <div class="alert alert-warning" *ngIf="customers.length === 0">
+    Nessun cliente in archivio.
+  </div>
+  <div class="list" *ngIf="customers.length > 0" >
+    <div class="customer" *ngFor="let customer of customers">
+      <app-show-customer-item [customer]="customer"></app-show-customer-item>
+    </div>
+  </div>
+</div>

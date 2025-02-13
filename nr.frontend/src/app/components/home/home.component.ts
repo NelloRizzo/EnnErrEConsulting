@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { BannerComponent } from "../banner/banner.component";
 
 @Component({
   selector: 'app-home',
-  imports: [BannerComponent],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  title = 'EnnErrE Consulting';
+  subtitle = 'Pianificazione e Gestione Attività';
 
 }

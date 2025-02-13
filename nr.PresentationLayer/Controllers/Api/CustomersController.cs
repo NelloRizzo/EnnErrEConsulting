@@ -85,7 +85,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <summary>
         /// Recupera tutti i clienti tramite una parte dell'email.
         /// </summary>
-        [HttpPost("/by/email")]
+        [HttpPost("by/email")]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<Results<InternalServerError, Ok<IEnumerable<CustomerModel>>>> GetAllCustomersByEmail([FromBody] SearchByEmailModel model) {
@@ -101,7 +101,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <summary>
         /// Recupera tutti i clienti tramite una parte di città e/o provincia.
         /// </summary>
-        [HttpPost("/by/city")]
+        [HttpPost("by/city")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -118,7 +118,7 @@ namespace nr.PresentationLayer.Controllers.Api
         /// <summary>
         /// Recupera tutti i clienti tramite una parte del nome.
         /// </summary>
-        [HttpPost("/by/name")]
+        [HttpPost("by/name")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

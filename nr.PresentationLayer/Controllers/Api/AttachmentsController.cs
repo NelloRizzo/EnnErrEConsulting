@@ -15,6 +15,11 @@ namespace nr.PresentationLayer.Controllers.Api
         const string CREATED_AT_ROUTE_LINK = $"{nameof(AttachmentsController)}_{nameof(GetLink)}";
         const string CREATED_AT_ROUTE_ATTACHMENT = $"{nameof(AttachmentsController)}_{nameof(GetAttachment)}";
 
+        /// <summary>
+        /// Crea un content di tipo url tramite il quale poter recuperare un contenuto embedded.
+        /// </summary>
+        /// <param name="linkId">Id del contenuto.</param>
+        /// <param name="mimeType">Tipo MIME del contenuto.</param>
         private UrlLinkModel UrlContent(int linkId, string mimeType) {
             var url = Url.RouteUrl(CREATED_AT_ROUTE_LINK, new { linkId })!;
             return new() {
@@ -25,12 +30,16 @@ namespace nr.PresentationLayer.Controllers.Api
             };
         }
 
+        /// <summary>
+        /// Upload di un contenuto.
+        /// </summary>
+        /// <param name="model">Dati di input da una richiesta MULTIPART/FORM-DATA.</param>
         [HttpPost("Upload")]
         [Consumes(MediaTypeNames.Multipart.FormData)]
-        [ProducesResponseType(typeof(AttachmentModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
-        public async Task<Results<CreatedAtRoute<AttachmentModel>, BadRequest<string>, InternalServerError>> Upload([FromForm] ContentFileUploadModel model) {
+        public async Task<Results<AcceptedAtRoute, BadRequest<string>, InternalServerError>> Upload([FromForm] ContentFileUploadModel model) {
             if (ModelState.IsValid) {
                 try {
                     using var ms = new MemoryStream();
@@ -46,12 +55,7 @@ namespace nr.PresentationLayer.Controllers.Api
                     };
                     var dto = mapper.Map<AttachmentDto>(attachment);
                     var response = await attachmentService.AddAsync(dto);
-
-                    var responseModel = mapper.Map<AttachmentModel>(response);
-
-                    responseModel.Content = UrlContent(response.Id, dto.Content.MimeType);
-
-                    return TypedResults.CreatedAtRoute(responseModel, CREATED_AT_ROUTE_ATTACHMENT, responseModel.Id);
+                    return TypedResults.AcceptedAtRoute(CREATED_AT_ROUTE_ATTACHMENT, new { attachmentId = response.Id });
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception adding attachment");
@@ -60,7 +64,10 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             return TypedResults.BadRequest("Invalid model");
         }
-
+        /// <summary>
+        /// Recupera un content di tipo url tramite il suo id.
+        /// </summary>
+        /// <param name="linkId">La chiave per il recupero.</param>
         [HttpGet("link/{linkId}", Name = CREATED_AT_ROUTE_LINK)]
         [ProducesResponseType(typeof(LinkModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,7 +81,10 @@ namespace nr.PresentationLayer.Controllers.Api
                 return TypedResults.InternalServerError();
             }
         }
-
+        /// <summary>
+        /// Aggiunge un attachment.
+        /// </summary>
+        /// <param name="model">Dati di input.</param>
         [HttpPost]
         [ProducesResponseType(typeof(AttachmentModel), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -86,7 +96,7 @@ namespace nr.PresentationLayer.Controllers.Api
                     var response = await attachmentService.AddAsync(dto);
                     var result = mapper.Map<AttachmentModel>(response);
                     result.Content = UrlContent(response.ContentId, response.ContentType);
-                    return TypedResults.CreatedAtRoute(result, CREATED_AT_ROUTE_ATTACHMENT, new { attachmentId = response.Id });
+                    return TypedResults.CreatedAtRoute(result, routeName: CREATED_AT_ROUTE_ATTACHMENT, routeValues: new { attachmentId = response.Id });
                 }
                 catch (Exception ex) {
                     logger.LogError(ex, "Exception adding attachment");
@@ -95,7 +105,10 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             return TypedResults.BadRequest("Invalid model");
         }
-
+        /// <summary>
+        /// Recupera un allegato.
+        /// </summary>
+        /// <param name="attachmentId">Chiave dell'allegato.</param>
         [HttpGet("{attachmentId}", Name = CREATED_AT_ROUTE_ATTACHMENT)]
         [ProducesResponseType(typeof(AttachmentModel), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -108,6 +121,28 @@ namespace nr.PresentationLayer.Controllers.Api
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception getting attachment {}", attachmentId);
+                return TypedResults.InternalServerError();
+            }
+        }
+        /// <summary>
+        /// Recupera tutti gli allegati.
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<AttachmentModel>), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<Results<Ok<IEnumerable<AttachmentModel>>, InternalServerError>> GetAllAttachments() {
+            try {
+                var attachment = await attachmentService.GetAllAsync();
+                var result = new List<AttachmentModel>();
+                foreach (var a in attachment) {
+                    var model = mapper.Map<AttachmentModel>(a);
+                    model.Content = UrlContent(a.Id, a.ContentType);
+                    result.Add(model);
+                }
+                return TypedResults.Ok<IEnumerable<AttachmentModel>>(result);
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "Exception getting all attachments");
                 return TypedResults.InternalServerError();
             }
         }

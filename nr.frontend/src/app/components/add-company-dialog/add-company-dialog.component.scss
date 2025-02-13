@@ -1,0 +1,26 @@
+mat-form-field {
+    width: 100%;
+}
+
+.add-person-dialog {
+    .form {
+        display: flex;
+        flex-direction: column;
+
+        .form-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+
+            .flex-item {
+                flex-basis: 50%;
+                flex-grow: 1;
+            }
+            .flex-item-small {
+                flex-basis: 25%;
+                flex-grow: 0;
+            }
+        }
+    }
+}

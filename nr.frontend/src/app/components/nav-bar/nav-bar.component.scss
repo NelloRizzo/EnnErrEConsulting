@@ -2,58 +2,60 @@
 @use 'sass:color';
 
 .nav-bar {
-    box-sizing: border-box;
-    margin-top: 1em;
+  box-sizing: border-box;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  padding-left: 1em;
+  padding-right: 1em;
+
+  nav {
     display: flex;
     flex-direction: row;
-    align-content: center;
-    background-color: mixins.$color-inv-background;
-    color: mixins.$color-inv-primary;
-    padding-left: 1em;
-    padding-right: 1em;
 
-    nav {
-        display: flex;
-        flex-direction: row;
+    .logo {
+      align-self: center;
 
-        .logo {
-            align-self: center;
-
-            img {
-                width: 2em;
-                background-color: mixins.$color-inv-primary;
-                padding: .3em;
-                border-radius: 50%;
-                box-shadow: 2px 2px 5px mixins.$color-accent;
-            }
-        }
-
-        ul {
-            user-select: none;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-
-            li {
-                padding: .3em .5em;
-
-                cursor: pointer;
-                list-style: none;
-                margin: 0 .5em;
-                border-bottom: 1px solid transparent;
-
-                &:hover {
-                    border-bottom: 1px solid mixins.$color-inv-primary;
-                    background-color: color.adjust($color: mixins.$color-accent, $alpha: .5);
-                    background-clip: padding-box;
-                    border-radius: 5px 10px;
-                }
-            }
-        }
+      img {
+        width: 2em;
+        padding: .3em;
+        border-radius: 50%;
+        box-shadow: 2px 2px 5px mixins.$clr-surface-tonal-a50;
+      }
     }
+
+    ul {
+      user-select: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      li {
+        padding: .3em .5em;
+        cursor: pointer;
+        list-style: none;
+        margin: 0 .5em;
+        background: mixins.$clr-surface-a20;
+        border-radius: 5px 10px;
+        box-shadow: 2px 2px 5px mixins.$clr-surface-tonal-a50;
+
+        &:hover {
+          background-clip: padding-box;
+          transform: translate(1px, -1px);
+          box-shadow: none;
+        }
+
+        a {
+          text-decoration: none;
+          color: mixins.$clr-dark-a0;
+        }
+      }
+    }
+  }
 }
 
 app-login {
-    flex: 1 1 0;
-    align-self: center;
+  flex: 1 1 0;
+  align-self: center;
 }

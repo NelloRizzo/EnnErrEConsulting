@@ -3,32 +3,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Giga:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-$basefontSize: 1rem;
+/** Base colors */
+$clr-dark-a0: #000000;
+$clr-light-a0: #ffffff;
 
-@mixin titleFont($weight, $size) {
-    font-family: "Lexend Giga", 'Times New Roman', Times, serif;
-    font-optical-sizing: auto;
-    font-weight: $weight;
-    font-style: normal;
-    font-size: $size;
+/** Light theme primary colors */
+$clr-primary-a0: #914c45;
+$clr-primary-a10: #90524b;
+$clr-primary-a20: #8f5852;
+$clr-primary-a30: #8e5e58;
+$clr-primary-a40: #8c645f;
+$clr-primary-a50: #8b6a65;
+
+/** Light theme surface colors */
+$clr-surface-a0: #ffffff;
+$clr-surface-a10: #f0f0f0;
+$clr-surface-a20: #e1e1e1;
+$clr-surface-a30: #d3d3d3;
+$clr-surface-a40: #c5c5c5;
+$clr-surface-a50: #b6b6b6;
+
+/** Light theme tonal surface colors */
+$clr-surface-tonal-a0: #f5eceb;
+$clr-surface-tonal-a10: #e7dfdf;
+$clr-surface-tonal-a20: #dad3d2;
+$clr-surface-tonal-a30: #cdc7c6;
+$clr-surface-tonal-a40: #bfbbba;
+$clr-surface-tonal-a50: #b2afae;
+
+ /** Examples */ 
+.bg-primary {
+ color: $clr-primary-a50; 
+ background-color: $clr-surface-a0; 
 }
-
-@mixin bodyFont($weight, $size: $basefontSize) {
-    font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-    font-optical-sizing: auto;
-    font-weight: $weight;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-}
-
-$color-primary: #ff8c00;
-$color-secondary: #508484;
-$color-accent: #fa0000;
-$color-muted: #4d5359;
-$color-background: #ffffff;
-
-$color-inv-secondary: #ff8c00;
-$color-inv-background: #508484;
-$color-inv-muted: #fa0000;
-$color-inv-accent: #4d5359;
-$color-inv-primary: #ffffff;

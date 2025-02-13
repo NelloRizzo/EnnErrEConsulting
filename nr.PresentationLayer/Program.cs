@@ -16,7 +16,7 @@ builder.Services.AddControllers()
 builder.Services
     .AddOpenApi("v1");
 
-var connectionString = builder.Configuration["Database:MsSql"] ?? throw new NullReferenceException("Unable to read connection string");
+var connectionString = builder.Configuration[builder.Configuration["Misc:Connection"]!] ?? throw new NullReferenceException("Unable to read connection string");
 builder.Services
     .AddAuthentication(cfg => {
         cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

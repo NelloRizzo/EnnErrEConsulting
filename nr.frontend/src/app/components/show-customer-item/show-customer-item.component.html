@@ -1,0 +1,12 @@
+<div class="customer">
+    <div class="icon">
+        <mat-icon *ngIf="customer.type==='person'">person</mat-icon>
+        <mat-icon *ngIf="customer.type==='company'">business</mat-icon>
+    </div>
+    <div class="name">{{customer.displayName}}</div>
+    <div class="controls">
+        <mat-icon>remove_red_eye</mat-icon>
+        <mat-icon>edit</mat-icon>
+        <mat-icon>delete_forever</mat-icon>
+    </div>
+</div>

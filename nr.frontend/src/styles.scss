@@ -1,20 +1,51 @@
 @use './mixins';
+@use './fonts';
 
 :root {
-    font-size: mixins.$basefontSize;
-    color: mixins.$color-primary;
-    background-color: mixins.$color-background;
+  font-size: 1.2rem;
+  color: mixins.$clr-dark-a0;
+  background-color: mixins.$clr-surface-a0;
+}
+
+
+body {
+  width: 90vw;
+  margin: 0 auto;
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+
+  @for $i from 1 through 6 {
+    h#{$i} {
+      font-family: "Lexend Giga", 'Times New Roman', Times, serif;
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-style: normal;
+      font-size: calc(1em + (6em - #{$i}em) / 3em);
+    }
+  }
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-    width: 90vw;
-    margin: 0 auto;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-    @include mixins.bodyFont(500, mixins.$basefontSize);
+.alert {
+  margin: .5em;
+  padding: 1em;
+  text-align: left;
+  font-style: italic;
+  border-radius: 1em;
 
-    @for $i from 1 through 6 {
-        h#{$i} {
-            @include mixins.titleFont($weight: 900, $size: calc(mixins.$basefontSize * (1 + (6 - $i) / 3)))
-        }
-    }
+  &.alert-warning {
+    color: mixins.$clr-light-a0;
+    background-color: mixins.$clr-primary-a20;
+  }
 }

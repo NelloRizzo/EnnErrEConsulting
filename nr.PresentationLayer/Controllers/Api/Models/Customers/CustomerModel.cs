@@ -19,5 +19,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// Discriminante di tipo.
         /// </summary>
         public required string Type { get; set; }
+        /// <summary>
+        /// Nome visualizzato.
+        /// </summary>
+        public string? DisplayName { get; set; }
     }
 }

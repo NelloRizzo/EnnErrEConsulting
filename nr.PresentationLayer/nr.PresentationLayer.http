@@ -1,6 +1,218 @@
-@nr.PresentationLayer_HostAddress = http://localhost:5083
+@nr.PresentationLayer_HostAddress = https://localhost:7293
 
-GET {{nr.PresentationLayer_HostAddress}}/weatherforecast/
-Accept: application/json
+### Ottiene tutti i dati di un allegato
+
+GET {{nr.PresentationLayer_HostAddress}}/api/attachments
+
+### Aggiunge un nuovo allegato in cui il file sia indirizzato tramite url.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/attachments
+Content-Type: application/json
+
+{
+  "name": "exampleAttachment",
+  "description": "This is an example attachment",
+  "fileUrl": "https://example.com/file.pdf"
+}
+
+### Recupera un allegato.
+
+@linkId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/attachments/link/{{linkId}}
+
+### Effettua l'upload di un allegato tramite un bodi di tipi multipart/form-data.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/attachments/Upload
+
+### Ottiene tutti i dati di un allegato.
+
+@attachmentId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/attachments/{{attachmentId}}
+
+### Ottiene tutti i corsi.
+
+GET {{nr.PresentationLayer_HostAddress}}/api/courses
+
+### Aggiunge un corso.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/courses
+Content-Type: application/json
+
+{
+  "title": "Example Course",
+  "description": "This is an example course",
+  "duration": 10
+}
+
+### Recupera i dati di un corso.
+
+@courseId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/courses/{{courseId}}
+
+### Aggiunge un collegamento tra un corso e un argomento.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/courses/{courseId}/Topics/Link
+Content-Type: application/json
+
+{
+  "topicId": 1
+}
+
+### Rimuove un collegamento tra un corso e un argomento.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/courses/{courseId}/Topics/Unlink
+Content-Type: application/json
+
+{
+  "topicId": 1
+}
+
+### Ottiene tutti i clienti.
+
+GET {{nr.PresentationLayer_HostAddress}}/api/customers
+
+### Aggiunge un cliente di tipo azienda.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/customers/company
+Content-Type: application/json
+
+{
+  "type": "company",
+  "companyName": "EnnErrE Consulting",
+  "fiscalCode": "RZZNLL68H06L628E",
+  "pec": "ennerreconsulting@pec.it",
+  "businessAddress": {
+    "street": "via XXIV Maggio",
+    "civicNumber": "17",
+    "postalCode": "84046",
+    "city": "Ascea",
+    "region": "SA",
+    "type": "postalAddress"
+  }
+}
+
+### Aggiunge un cliente di tipo persona.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/customers/person
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com"
+}
+
+### Recupera i dati di un cliente.
+
+@customerId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/customers/{{customerId}}
+
+### Aggiunge una pianificazione per un corso.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/planning
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "startDate": "2023-01-01",
+  "endDate": "2023-01-10"
+}
+
+### Aggiunge una pianificazione lunga per un corso.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/planning/long
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "startDate": "2023-01-01",
+  "endDate": "2023-12-31"
+}
+
+### Aggiunge una pianificazione settimanale per un corso.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/planning/weeks
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "weeks": 12
+}
+
+### Recupera tutti gli argomenti.
+
+GET {{nr.PresentationLayer_HostAddress}}/api/topics
+
+### Aggiunge un argomento.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/topics
+Content-Type: application/json
+
+{
+  "title": "Example Topic",
+  "description": "This is an example topic"
+}
+
+### Recupera un argomento.
+
+@topicId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/topics/{{topicId}}
+
+### Recupera tutti gli utenti.
+
+GET {{nr.PresentationLayer_HostAddress}}/api/users
+
+### Aggiunge un nuovo utente.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "exampleUser",
+  "password": "examplePassword",
+  "email": "user@example.com"
+}
+
+### Effettua il login di un utente.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "username": "exampleUser",
+  "password": "examplePassword"
+}
+
+### Recupera i dati di un utente.
+
+@userId=0
+GET {{nr.PresentationLayer_HostAddress}}/api/users/{{userId}}
+
+
+### Ottiene i dati dei clienti cercando sulla città.
+POST {{nr.PresentationLayer_HostAddress}}/api/customers/by/city
+Content-Type: application/json
+
+{
+  //SearchByCityModel
+}
+
+### Ottiene i dati dei clienti cercando sulla email.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/customers/by/email
+Content-Type: application/json
+
+{
+  //SearchByEmailModel
+}
+
+### Ottiene i dati dei clienti cercando sul nome.
+
+POST {{nr.PresentationLayer_HostAddress}}/api/customers/by/name
+Content-Type: application/json
+
+{
+  //SearchByNameModel
+}
 
 ###

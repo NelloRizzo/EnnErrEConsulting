@@ -1,0 +1,11 @@
+@use '../../../mixins';
+
+.home {
+  display: flex;
+  flex-direction: column;
+
+  .banner {
+    margin: 2em;
+    text-align: center;
+  }
+}

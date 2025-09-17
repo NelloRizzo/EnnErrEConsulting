@@ -1,8 +1,4 @@
-﻿using nr.BusinessLayer.Dto.Courses;
-using nr.BusinessLayer.Dto.Customers;
-using System.ComponentModel.DataAnnotations;
-
-namespace nr.BusinessLayer.Dto.Planning
+﻿namespace nr.BusinessLayer.Dto.Planning
 {
     /// <summary>
     /// Pianificazione di un corso.

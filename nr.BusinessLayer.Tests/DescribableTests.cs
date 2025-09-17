@@ -1,6 +1,8 @@
-﻿namespace nr.BusinessLayer.Tests
+﻿using nr.Utils;
+
+namespace nr.BusinessLayer.Tests
 {
-    class Test
+    class First
     {
         public string Name { get; set; } = "Name";
         public string Description { get; set; } = "Description";
@@ -12,9 +14,8 @@
     {
         [Test]
         public void Describable() {
-            var t = new Test();
-            Assert.DoesNotThrow(() => Console.WriteLine(t));
+            var t = new First();
+            Assert.DoesNotThrow(() => Console.WriteLine(t.Describe()));
         }
-
     }
 }

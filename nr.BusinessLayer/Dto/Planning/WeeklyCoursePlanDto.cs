@@ -1,5 +1,4 @@
-﻿using nr.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace nr.BusinessLayer.Dto.Planning
 {

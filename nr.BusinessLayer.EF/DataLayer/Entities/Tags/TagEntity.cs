@@ -26,14 +26,14 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Tags
         /// <summary>
         /// Allegati collegati.
         /// </summary>
-        public virtual IList<AttachmentEntity> Attachments { get; set; } = [];
+        public virtual ICollection<AttachmentEntity> Attachments { get; set; } = [];
         /// <summary>
         /// Corsi collegati.
         /// </summary>
-        public virtual IList<CourseEntity> Courses { get; set; } = [];
+        public virtual ICollection<CourseEntity> Courses { get; set; } = [];
         /// <summary>
         /// Argomenti collegati.
         /// </summary>
-        public virtual IList<TopicEntity> Topics { get; set; } = [];
+        public virtual ICollection<TopicEntity> Topics { get; set; } = [];
     }
 }

@@ -1,4 +1,5 @@
 ﻿using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
+using nr.BusinessLayer.EF.DataLayer.Entities.Operators;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,9 +25,10 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
         /// </summary>
         [ForeignKey(nameof(BusinessAddressId))]
         public virtual required PostalAddressEntity BusinessAddress { get; set; }
+        public virtual ICollection<CustomerUserRelationship> Users { get; set; } = [];
         /// <summary>
         /// Eventuali altri indirizzi.
         /// </summary>
-        public virtual IList<AddressEntity> Addresses { get; set; } = [];
+        public virtual ICollection<AddressEntity> Addresses { get; set; } = [];
     }
 }

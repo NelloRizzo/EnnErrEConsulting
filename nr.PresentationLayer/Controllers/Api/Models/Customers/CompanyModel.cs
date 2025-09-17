@@ -13,10 +13,10 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
     [AtLeastOne(nameof(Pec), nameof(Sdi))]
     public class CompanyModel : CustomerModel
     {
-        /// <summary>
-        /// Discriminante di tipo.
-        /// </summary>
-        internal static readonly string ModelType = nameof(CompanyModel).ToCamelCase().Replace("Model", "");
+        ///// <summary>
+        ///// Discriminante di tipo.
+        ///// </summary>
+        //internal static readonly string ModelType = nameof(CompanyModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// Nome dell'azienda.
         /// </summary>

@@ -8,10 +8,10 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
     /// </summary>
     public class ContentLinkModel : LinkModel
     {
-        /// <summary>
-        /// Discriminante di tipo.
-        /// </summary>
-        internal static readonly string ModelType = nameof(ContentLinkModel).ToCamelCase().Replace("Model", "");
+        ///// <summary>
+        ///// Discriminante di tipo.
+        ///// </summary>
+        //internal static readonly string ModelType = nameof(ContentLinkModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// Il contenuto trasformato in bytes.
         /// </summary>

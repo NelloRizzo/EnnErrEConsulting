@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
@@ -7,6 +8,8 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
     /// Tabella delle aziende.
     /// </summary>
     [Table("Companies")]
+    [Index(nameof(FiscalCode), nameof(VatCode), IsUnique = true)]
+    [Index(nameof(Pec), nameof(Sdi), IsUnique = true)]
     public class CompanyEntity : CustomerEntity
     {
         /// <summary>

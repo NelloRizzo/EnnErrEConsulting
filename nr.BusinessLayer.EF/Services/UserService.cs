@@ -158,7 +158,7 @@ namespace nr.BusinessLayer.EF.Services
                 foreach (var role in user.Roles)
                     await AddUserToRoleAsync(user.Email, role);
                 await trans.CommitAsync();
-                return mapper.Map<UserDto?>(user);
+                return mapper.Map<UserDto?>(u);
             }
             catch (ServiceException) {
                 throw;

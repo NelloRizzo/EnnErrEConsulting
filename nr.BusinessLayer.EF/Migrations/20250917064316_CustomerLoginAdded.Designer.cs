@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nr.BusinessLayer.EF.DataLayer;
 
@@ -11,9 +12,11 @@ using nr.BusinessLayer.EF.DataLayer;
 namespace nr.BusinessLayer.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250917064316_CustomerLoginAdded")]
+    partial class CustomerLoginAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,28 +293,18 @@ namespace nr.BusinessLayer.EF.Migrations
                     b.Property<int>("BusinessAddressId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessAddressId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Customers");
 
                     b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomersUsers", (string)null);
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.RoleEntity", b =>
@@ -724,24 +717,11 @@ namespace nr.BusinessLayer.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BusinessAddress");
-                });
-
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
-                {
-                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", "Customer")
-                        .WithMany("Users")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Customer");
+                    b.Navigation("BusinessAddress");
 
                     b.Navigation("User");
                 });
@@ -867,8 +847,6 @@ namespace nr.BusinessLayer.EF.Migrations
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", b =>

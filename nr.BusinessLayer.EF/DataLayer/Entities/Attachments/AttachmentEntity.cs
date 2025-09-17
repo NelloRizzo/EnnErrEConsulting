@@ -38,14 +38,14 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Attachments
         /// <summary>
         /// Elenco degli argomenti ai quali è collegato.
         /// </summary>
-        public virtual IList<TopicEntity> Topics { get; set; } = [];
+        public virtual ICollection<TopicEntity> Topics { get; set; } = [];
         /// <summary>
         /// Elenco dei corsi ai quali è collegato.
         /// </summary>
-        public virtual IList<CourseEntity> Courses { get; set; } = [];
+        public virtual ICollection<CourseEntity> Courses { get; set; } = [];
         /// <summary>
         /// Elenco dei tags ai quali è collegato.
         /// </summary>
-        public virtual IList<TagEntity> Tags { get; set; } = [];
+        public virtual ICollection<TagEntity> Tags { get; set; } = [];
     }
 }

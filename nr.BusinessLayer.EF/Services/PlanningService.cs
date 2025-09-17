@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using nr.BusinessLayer.Dto.Courses;
 using nr.BusinessLayer.Dto.Customers;
 using nr.BusinessLayer.Dto.Planning;
@@ -61,7 +60,7 @@ namespace nr.BusinessLayer.EF.Services
         }
 
         private async Task<CoursePlanEntity> AddAsync(CourseEntity course, CustomerEntity customer, IEnumerable<PlanDateEntity> dates) {
-            var entity = new CoursePlanEntity { Course = course, Customer = customer, CustomerId = customer.Id, Dates = dates };
+            var entity = new CoursePlanEntity { Course = course, Customer = customer, CustomerId = customer.Id, Dates = [.. dates] };
             context.Planning.Add(entity);
             await context.SaveChangesAsync();
             return entity;

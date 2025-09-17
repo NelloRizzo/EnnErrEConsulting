@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nr.BusinessLayer.EF.DataLayer;
 
@@ -11,9 +12,11 @@ using nr.BusinessLayer.EF.DataLayer;
 namespace nr.BusinessLayer.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250917070112_MultipleUsersLinkedToCustomersUpdated")]
+    partial class MultipleUsersLinkedToCustomersUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,7 +314,7 @@ namespace nr.BusinessLayer.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CustomersUsers", (string)null);
+                    b.ToTable("CustomerUserRelationship");
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.RoleEntity", b =>

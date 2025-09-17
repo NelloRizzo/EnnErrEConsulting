@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nr.BusinessLayer.EF.DataLayer;
 
@@ -11,9 +12,11 @@ using nr.BusinessLayer.EF.DataLayer;
 namespace nr.BusinessLayer.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250626100012_UniqueFiscalData")]
+    partial class UniqueFiscalData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,21 +300,6 @@ namespace nr.BusinessLayer.EF.Migrations
                     b.ToTable("Customers");
 
                     b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomersUsers", (string)null);
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.RoleEntity", b =>
@@ -727,25 +715,6 @@ namespace nr.BusinessLayer.EF.Migrations
                     b.Navigation("BusinessAddress");
                 });
 
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
-                {
-                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", "Customer")
-                        .WithMany("Users")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserRoleRelationship", b =>
                 {
                     b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Operators.RoleEntity", "Role")
@@ -867,8 +836,6 @@ namespace nr.BusinessLayer.EF.Migrations
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", b =>

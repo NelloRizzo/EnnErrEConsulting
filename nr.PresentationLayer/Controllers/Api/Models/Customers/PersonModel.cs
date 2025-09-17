@@ -8,10 +8,10 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
     /// </summary>
     public class PersonModel : CustomerModel
     {
-        /// <summary>
-        /// Discriminante di tipo.
-        /// </summary>
-        internal static readonly string ModelType = nameof(PersonModel).ToCamelCase().Replace("Model", "");
+        ///// <summary>
+        ///// Discriminante di tipo.
+        ///// </summary>
+        //internal static readonly string ModelType = nameof(PersonModel).ToCamelCase().Replace("Model", "");
         /// <summary>
         /// Nome.
         /// </summary>

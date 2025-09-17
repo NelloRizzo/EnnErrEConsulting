@@ -31,7 +31,15 @@ namespace nr.BusinessLayer.EF.DataLayer
         public virtual DbSet<LinkEntity> Links { get; set; }
         public virtual DbSet<UrlLinkEntity> UrlLinks { get; set; }
         public virtual DbSet<ContentLinkEntity> EmbeddedLinks { get; set; }
-        public virtual DbSet<CoursePlanEntity> Planning {  get; set; }
-        public virtual DbSet<PlanDateEntity> PlanningDates {  get; set; }
+        public virtual DbSet<CoursePlanEntity> Planning { get; set; }
+        public virtual DbSet<PlanDateEntity> PlanningDates { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CustomerUserRelationship>()
+                .ToTable("CustomersUsers")
+                .HasKey(e => new {  e.CustomerId, e.UserId });
+        }
     }
 }

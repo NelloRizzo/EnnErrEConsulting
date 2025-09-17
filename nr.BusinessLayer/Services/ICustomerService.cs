@@ -74,5 +74,7 @@ namespace nr.BusinessLayer.Services
         /// <param name="addressId">La chiave dell'indirizzo.</param>
         /// <returns>I dati del cliente dopo l'aggiunta dell'indirizzo.</returns>
         Task<CustomerDto> RemoveAddressAsync(int customerId, int addressId);
+        Task<CustomerDto> LinkToUser(int customerId, string username);
+        Task<CustomerDto> UnlinkFromUser(int customerId, string username);
     }
 }

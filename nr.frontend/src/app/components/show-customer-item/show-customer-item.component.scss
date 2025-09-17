@@ -18,4 +18,21 @@
         flex-direction: row;
         flex: 0;
     }
+    .button {
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        &.mat-button {
+            color: inherit;
+        }
+       
+    }
 }

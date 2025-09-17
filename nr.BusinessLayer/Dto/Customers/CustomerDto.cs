@@ -1,4 +1,5 @@
 ﻿using nr.BusinessLayer.Dto.Customers.Addresses;
+using nr.BusinessLayer.Dto.Operators;
 using System.ComponentModel.DataAnnotations;
 
 namespace nr.BusinessLayer.Dto.Customers
@@ -12,6 +13,7 @@ namespace nr.BusinessLayer.Dto.Customers
         /// Nome con cui il cliente viene visualizzato.
         /// </summary>
         public abstract string DisplayName { get; }
+        public IEnumerable<UserDto> Users { get; set; } = [];
         /// <summary>
         /// Indirizzo postale di residenza/sede legale.
         /// </summary>

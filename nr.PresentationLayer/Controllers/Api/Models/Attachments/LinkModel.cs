@@ -1,5 +1,4 @@
-﻿using nr.PresentationLayer.Controllers.Api.JsonConverters;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
@@ -7,7 +6,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
     /// <summary>
     /// Classe base per i contenuti.
     /// </summary>
-    [JsonConverter(typeof(LinkModelConverter))]
+    //[JsonConverter(typeof(LinkModelConverter))]
+    [JsonDerivedType(typeof(ContentLinkModel), "link")]
+    [JsonDerivedType(typeof(UrlLinkModel), "url")]
     public abstract class LinkModel
     {
         /// <summary>
@@ -19,9 +20,9 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
         /// </summary>
         [Required, MaxLength(80)]
         public virtual required string MimeType { get; set; }
-        /// <summary>
-        /// Discriminante di tipo per serializzazione e deserializzazione JSON.
-        /// </summary>
-        public string? Type { get; set; }
+        ///// <summary>
+        ///// Discriminante di tipo per serializzazione e deserializzazione JSON.
+        ///// </summary>
+        //public string? Type { get; set; }
     }
 }

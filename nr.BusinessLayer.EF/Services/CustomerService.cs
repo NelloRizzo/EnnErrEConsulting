@@ -205,5 +205,13 @@ namespace nr.BusinessLayer.EF.Services
                 throw new ServiceException(innerException: ex);
             }
         }
+
+        public Task<CustomerDto> LinkToUser(int customerId, string username) {
+            throw new NotImplementedException();
+        }
+
+        public Task<CustomerDto> UnlinkFromUser(int customerId, string username) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -30,6 +30,6 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Operators
         /// <summary>
         /// Elenco dei ruoli collegati.
         /// </summary>
-        public virtual IList<UserRoleRelationship> Roles { get; set; } = [];
+        public virtual ICollection<UserRoleRelationship> Roles { get; set; } = [];
     }
 }

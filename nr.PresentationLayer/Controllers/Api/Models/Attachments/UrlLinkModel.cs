@@ -8,10 +8,10 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
     /// </summary>
     public class UrlLinkModel : LinkModel
     {
-        /// <summary>
-        /// Discriminante di tipo.
-        /// </summary>
-        internal static readonly string ModelType = nameof(UrlLinkModel).ToCamelCase().Replace("Model", "");
+        ///// <summary>
+        ///// Discriminante di tipo.
+        ///// </summary>
+        //internal static readonly string ModelType = nameof(UrlLinkModel).ToCamelCase().Replace("Model", "");
         [Required, MaxLength(512)]
         public required string Url { get; set; }
     }

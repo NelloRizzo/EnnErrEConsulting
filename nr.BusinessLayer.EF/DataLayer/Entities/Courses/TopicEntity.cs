@@ -38,14 +38,14 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Courses
         /// <summary>
         /// Argomenti interni.
         /// </summary>
-        public virtual IList<InnerTopicEntity> InnerTopics { get; set; } = [];
+        public virtual ICollection<InnerTopicEntity> InnerTopics { get; set; } = [];
         /// <summary>
         /// Allegati.
         /// </summary>
-        public virtual IList<AttachmentEntity> Attachments { get; set; } = [];
+        public virtual ICollection<AttachmentEntity> Attachments { get; set; } = [];
         /// <summary>
         /// Tags.
         /// </summary>
-        public virtual IList<TagEntity> Tags { get; set; } = [];
+        public virtual ICollection<TagEntity> Tags { get; set; } = [];
     }
 }

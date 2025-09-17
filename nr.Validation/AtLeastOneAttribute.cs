@@ -10,6 +10,13 @@ namespace nr.Validation
     public class AtLeastOneAttribute(params string[] fields) : ValidationAttribute
     {
         private readonly string[] _fields = fields;
+
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) {
+            if (IsValid(value)) return ValidationResult.Success;
+
+            return new ValidationResult(ErrorMessage ?? $"At least one of [{string.Join(',', _fields)}] fields must be not null");
+        }
+
         public override bool IsValid(object? value) =>
             value?.GetType().GetProperties()
                 .Where(p => _fields.Contains(p.Name, StringComparer.InvariantCultureIgnoreCase))

@@ -1,10 +1,12 @@
-﻿using nr.PresentationLayer.Controllers.Api.JsonConverters;
-using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
+﻿using nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses;
+using nr.PresentationLayer.Controllers.Api.Models.Users;
 using System.Text.Json.Serialization;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Customers
 {
-    [JsonConverter(typeof(CustomerModelConverter))]
+    //[JsonConverter(typeof(CustomerModelConverter))]
+    [JsonDerivedType(typeof(PersonModel), "person")]
+    [JsonDerivedType(typeof(CompanyModel), "company")]
     public class CustomerModel
     {
         /// <summary>
@@ -15,10 +17,11 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// Evenutali indirizzi addizionali.
         /// </summary>
         public IEnumerable<AddressModel> AdditionalAddresses { get; set; } = [];
-        /// <summary>
-        /// Discriminante di tipo.
-        /// </summary>
-        public required string Type { get; set; }
+        public IEnumerable<UserModel> Users { get; set; } = [];
+        ///// <summary>
+        ///// Discriminante di tipo.
+        ///// </summary>
+        //public required string Type { get; set; }
         /// <summary>
         /// Nome visualizzato.
         /// </summary>

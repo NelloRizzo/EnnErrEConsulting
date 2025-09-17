@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -9,19 +8,16 @@ namespace nr.BusinessLayer.EF.Migrations
     public partial class AddedPlanning : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.CreateTable(
                 name: "CoursePlannings",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_CoursePlannings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CoursePlannings_Courses_CourseId",
@@ -39,8 +35,7 @@ namespace nr.BusinessLayer.EF.Migrations
 
             migrationBuilder.CreateTable(
                 name: "PlanDates",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
@@ -48,8 +43,7 @@ namespace nr.BusinessLayer.EF.Migrations
                     EndTime = table.Column<TimeOnly>(type: "time", nullable: false),
                     CoursePlanEntityId = table.Column<int>(type: "int", nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_PlanDates", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PlanDates_CoursePlannings_CoursePlanEntityId",
@@ -75,8 +69,7 @@ namespace nr.BusinessLayer.EF.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropTable(
                 name: "PlanDates");
 

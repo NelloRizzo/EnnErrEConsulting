@@ -1,22 +1,28 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using nr.BusinessLayer.EF;
-using nr.PresentationLayer.Automapper;
+using nr.PresentationLayer.Configuration.Automapper;
+using nr.PresentationLayer.Configuration.ExceptionHandlers;
+using nr.PresentationLayer.Configuration.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers()
-    ;
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services
-    .AddOpenApi("v1");
+    .AddControllers(options =>
+        options.Filters.Add<ModelValidationFilterAttribute>()
+    );
 
-var connectionString = builder.Configuration[builder.Configuration["Misc:Connection"]!] ?? throw new NullReferenceException("Unable to read connection string");
+builder.Services
+    .AddExceptionHandler<GlobalExceptionHandler>()
+    .AddProblemDetails()
+    .Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true);
+
+builder.Services.AddOpenApi("v1");
+
 builder.Services
     .AddAuthentication(cfg => {
         cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -32,6 +38,8 @@ builder.Services
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     });
 
+// Application services
+var connectionString = builder.Configuration[builder.Configuration["Misc:Connection"]!] ?? throw new NullReferenceException("Unable to read connection string");
 builder.Services
     .AddCors(cfg => cfg.AddPolicy("cors", cfg => cfg.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()))
     .ConfigureApplicationServices(opt => opt.UseSqlServer(connectionString).UseLazyLoadingProxies())
@@ -39,9 +47,11 @@ builder.Services
     ;
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
+
+    app.UseCors("cors");
 
     app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/openapi/v1.json", "v1");
@@ -49,9 +59,10 @@ if (app.Environment.IsDevelopment()) {
 
 }
 
+app.UseExceptionHandler().UseStatusCodePages();
+
 app.UseHttpsRedirection();
 
-app.UseCors("cors");
 app.UseAuthentication();
 app.UseAuthorization();
 

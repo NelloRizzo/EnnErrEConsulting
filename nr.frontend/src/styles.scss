@@ -1,10 +1,10 @@
-@use './mixins';
+@use './mixins' as m;
 @use './fonts';
 
 :root {
   font-size: 1.2rem;
-  color: mixins.$clr-dark-a0;
-  background-color: mixins.$clr-surface-a0;
+  color: m.$clr-dark-a0;
+  background-color: m.$clr-surface-a0;
 }
 
 
@@ -45,7 +45,7 @@ body {
   border-radius: 1em;
 
   &.alert-warning {
-    color: mixins.$clr-light-a0;
-    background-color: mixins.$clr-primary-a20;
+    color: m.$clr-light-a0;
+    background-color: m.$clr-primary-a20;
   }
 }

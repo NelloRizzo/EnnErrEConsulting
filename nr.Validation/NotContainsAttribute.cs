@@ -15,6 +15,12 @@ namespace nr.Validation
     [AttributeUsage(AttributeTargets.Class)]
     public class NotContainsAttribute(string compareField, string collectionField, string? innerProperty = null) : ValidationAttribute()
     {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) {
+            if (IsValid(value)) return ValidationResult.Success;
+
+            return new ValidationResult(ErrorMessage ?? $"Field {compareField} does not contains values in collection stored into {string.Join(',', collectionField)} field");
+        }
+
         public override bool IsValid(object? value) {
             var property = value!.GetType().GetProperty(compareField)!;
             var collection = value!.GetType().GetProperty(collectionField)!.GetValue(value);

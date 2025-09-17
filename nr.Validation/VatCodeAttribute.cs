@@ -10,6 +10,11 @@ namespace nr.Validation
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class VatCodeAttribute : ValidationAttribute
     {
-        public override bool IsValid(object? value) => value == null || (value is string fc && fc.IsVatCode());
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) {
+            if (IsValid(value)) return ValidationResult.Success;
+
+            return new ValidationResult(ErrorMessage ?? $"Field {validationContext.MemberName!} must be a valid italian VAT");
+        }
+        public override bool IsValid(object? value) => value == null || value is string fc && fc.IsVatCode();
     }
 }

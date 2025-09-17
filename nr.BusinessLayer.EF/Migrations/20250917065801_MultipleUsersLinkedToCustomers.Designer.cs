@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nr.BusinessLayer.EF.DataLayer;
 
@@ -11,9 +12,11 @@ using nr.BusinessLayer.EF.DataLayer;
 namespace nr.BusinessLayer.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250917065801_MultipleUsersLinkedToCustomers")]
+    partial class MultipleUsersLinkedToCustomers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,21 +302,6 @@ namespace nr.BusinessLayer.EF.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomersUsers", (string)null);
-                });
-
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.RoleEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -343,6 +331,9 @@ namespace nr.BusinessLayer.EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CustomerEntityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -354,6 +345,8 @@ namespace nr.BusinessLayer.EF.Migrations
                         .HasColumnType("nvarchar(125)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerEntityId");
 
                     b.HasIndex(new[] { "Email" }, "IDX_USERNAME_UNIQUE")
                         .IsUnique();
@@ -727,23 +720,11 @@ namespace nr.BusinessLayer.EF.Migrations
                     b.Navigation("BusinessAddress");
                 });
 
-            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerUserRelationship", b =>
+            modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", b =>
                 {
-                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", "Customer")
+                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Customers.CustomerEntity", null)
                         .WithMany("Users")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("User");
+                        .HasForeignKey("CustomerEntityId");
                 });
 
             modelBuilder.Entity("nr.BusinessLayer.EF.DataLayer.Entities.Operators.UserRoleRelationship", b =>

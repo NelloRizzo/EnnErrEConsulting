@@ -37,6 +37,6 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Planning
         /// <summary>
         /// La pianificazione.
         /// </summary>
-        public virtual IEnumerable<PlanDateEntity> Dates { get; set; } = [];
+        public virtual ICollection<PlanDateEntity> Dates { get; set; } = [];
     }
 }

@@ -12,7 +12,7 @@ using nr.PresentationLayer.Controllers.Api.Models.Planning;
 using nr.Utils;
 using System.Text;
 
-namespace nr.PresentationLayer.Automapper
+namespace nr.PresentationLayer.Configuration.Automapper
 {
     /// <summary>
     /// Profili di mapping da Model a Dto e viceversa.
@@ -33,13 +33,13 @@ namespace nr.PresentationLayer.Automapper
             CreateMap<PersonModel, PersonDto>()
                 ;
             CreateMap<PersonDto, PersonModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => PersonModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => PersonModel.ModelType))
                 ;
 
             CreateMap<CompanyModel, CompanyDto>()
                 ;
             CreateMap<CompanyDto, CompanyModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => CompanyModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => CompanyModel.ModelType))
                 ;
             #endregion
 
@@ -69,15 +69,15 @@ namespace nr.PresentationLayer.Automapper
                 ;
             CreateMap<PostalAddressDto, PostalAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => PostalAddressModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => PostalAddressModel.ModelType))
                 ;
             CreateMap<EmailAddressDto, EmailAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => EmailAddressModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => EmailAddressModel.ModelType))
                 ;
             CreateMap<PhoneNumberAddressDto, PhoneNumberAddressModel>()
                 .IncludeBase<AddressDto, AddressModel>()
-                .ForMember(d => d.Type, m => m.MapFrom(s => PhoneNumberAddressModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => PhoneNumberAddressModel.ModelType))
                 ;
             #endregion
 
@@ -135,12 +135,12 @@ namespace nr.PresentationLayer.Automapper
                 ;
             CreateMap<UrlLinkDto, UrlLinkModel>()
                 .IncludeAllDerived()
-                .ForMember(d => d.Type, m => m.MapFrom(s => UrlLinkModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => UrlLinkModel.ModelType))
                 ;
             CreateMap<ContentLinkDto, ContentLinkModel>()
                 .ForMember(d => d.Content, m => m.MapFrom(s => Convert.ToBase64String(s.Content)))
                 .IncludeAllDerived()
-                .ForMember(d => d.Type, m => m.MapFrom(s => ContentLinkModel.ModelType))
+                //.ForMember(d => d.Type, m => m.MapFrom(s => ContentLinkModel.ModelType))
                 ;
             CreateMap<ContentLinkModel, ContentLinkDto>()
                 .ForMember(d => d.Content, m => m.MapFrom(s => Encoding.UTF8.GetBytes(s.Content)))

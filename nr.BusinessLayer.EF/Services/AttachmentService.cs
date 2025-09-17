@@ -5,6 +5,7 @@ using nr.BusinessLayer.EF.DataLayer;
 using nr.BusinessLayer.EF.DataLayer.Entities.Attachments;
 using nr.BusinessLayer.Services;
 using nr.BusinessLayer.Services.Exceptions;
+using nr.Validation;
 
 namespace nr.BusinessLayer.EF.Services
 {
@@ -19,6 +20,7 @@ namespace nr.BusinessLayer.EF.Services
         /// <exception cref="ServiceException"></exception>
         public async Task<AttachmentWithoutContentDto> AddAsync(AttachmentDto attachmentDto) {
             try {
+                if (!attachmentDto.IsValid()) throw new InvalidDtoException { InvalidDto = attachmentDto };
                 var attachment = mapper.Map<AttachmentEntity>(attachmentDto);
                 var trans = await context.Database.BeginTransactionAsync();
                 context.Links.Add(attachment.Link);
@@ -28,6 +30,9 @@ namespace nr.BusinessLayer.EF.Services
                 await trans.CommitAsync();
 
                 return mapper.Map<AttachmentWithoutContentDto>(attachment);
+            }
+            catch (ServiceException) {
+                throw;
             }
             catch (Exception ex) {
                 logger.LogError(ex, "Exception adding attachment");

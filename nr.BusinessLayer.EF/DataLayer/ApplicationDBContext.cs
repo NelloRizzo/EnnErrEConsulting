@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using nr.BusinessLayer.EF.DataLayer.Entities.Assessments;
 using nr.BusinessLayer.EF.DataLayer.Entities.Attachments;
 using nr.BusinessLayer.EF.DataLayer.Entities.Courses;
 using nr.BusinessLayer.EF.DataLayer.Entities.Customers;
@@ -34,12 +35,22 @@ namespace nr.BusinessLayer.EF.DataLayer
         public virtual DbSet<CoursePlanEntity> Planning { get; set; }
         public virtual DbSet<PlanDateEntity> PlanningDates { get; set; }
 
+        public virtual DbSet<AssessmentTestEntity> Assessments { get; set; }
+        public virtual DbSet<AssessmentsDelivery> AssessmentsDeliveries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CustomerUserRelationship>()
-                .ToTable("CustomersUsers")
-                .HasKey(e => new { e.CustomerId, e.UserId });
+                .HasKey(e => new { e.CustomerId, e.UserId })
+                ;
+
+            modelBuilder.Entity<QuestionAnswerEntity>()
+                .HasKey(e => new { e.AnswerId, e.QuestionId })
+                ;
+            modelBuilder.Entity<AssessmentsDelivery>()
+                .HasKey(e => new { e.AssessmentId, e.UserId, e.DeliveryDate })
+                ;
         }
     }
 }

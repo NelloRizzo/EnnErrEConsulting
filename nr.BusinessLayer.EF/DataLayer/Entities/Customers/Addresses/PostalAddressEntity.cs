@@ -17,8 +17,8 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses
         /// <summary>
         /// Numero civico.
         /// </summary>
-        [Required(AllowEmptyStrings = true), MaxLength(10)]
-        public required string CivicNumber { get; set; }
+        [MaxLength(10)]
+        public string? CivicNumber { get; set; }
         /// <summary>
         /// La città.
         /// </summary>

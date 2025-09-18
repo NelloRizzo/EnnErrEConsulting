@@ -1,4 +1,5 @@
-﻿using nr.BusinessLayer.Dto.Operators;
+﻿using nr.BusinessLayer.Dto.Assessments.Questions;
+using nr.BusinessLayer.Dto.Operators;
 
 namespace nr.BusinessLayer.Dto.Assessments
 {
@@ -8,7 +9,7 @@ namespace nr.BusinessLayer.Dto.Assessments
         public required AssessmentTestDto AssessmentTest { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public IEnumerable<decimal> Points { get; set; } = [];
-        public decimal TotalPoints => Points.Sum();
+        public IEnumerable<QuestionAnswer> Answers { get; set; } = [];
+        public decimal TotalPoints => Answers.Sum(a => a.Weight);
     }
 }

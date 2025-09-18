@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
 {
+    [Table("CustomersUsers")]
     public class CustomerUserRelationship
     {
         public int UserId { get; set; }

@@ -5,6 +5,7 @@
     /// </summary>
     public class CourseModel
     {
+        public int Id {  get; set; }
         /// <summary>
         /// Nome del corso.
         /// </summary>

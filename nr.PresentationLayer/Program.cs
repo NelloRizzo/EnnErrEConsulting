@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using nr.BusinessLayer.EF;
 using nr.PresentationLayer.Configuration.Automapper;
@@ -19,7 +18,8 @@ builder.Services
 builder.Services
     .AddExceptionHandler<GlobalExceptionHandler>()
     .AddProblemDetails()
-    .Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true);
+    //.Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true)
+    ;
 
 builder.Services.AddOpenApi("v1");
 
@@ -39,10 +39,9 @@ builder.Services
     });
 
 // Application services
-var connectionString = builder.Configuration[builder.Configuration["Misc:Connection"]!] ?? throw new NullReferenceException("Unable to read connection string");
 builder.Services
     .AddCors(cfg => cfg.AddPolicy("cors", cfg => cfg.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()))
-    .ConfigureApplicationServices(opt => opt.UseSqlServer(connectionString).UseLazyLoadingProxies())
+    .ConfigureApplicationServices(builder.Configuration)
     .AddSingleton(new MapperConfiguration(cfg => cfg.AddProfile<ModelsMappings>()).CreateMapper())
     ;
 
@@ -59,7 +58,7 @@ if (app.Environment.IsDevelopment()) {
 
 }
 
-app.UseExceptionHandler().UseStatusCodePages();
+//app.UseExceptionHandler().UseStatusCodePages();
 
 app.UseHttpsRedirection();
 

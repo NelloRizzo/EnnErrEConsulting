@@ -19,8 +19,8 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
         /// <summary>
         /// Numero civico.
         /// </summary>
-        [Required(AllowEmptyStrings = true), MaxLength(10)]
-        public required string CivicNumber { get; set; }
+        [MaxLength(10)]
+        public string? CivicNumber { get; set; }
         /// <summary>
         /// Città.
         /// </summary>

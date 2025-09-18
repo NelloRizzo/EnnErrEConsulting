@@ -12,7 +12,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// <summary>
         /// Chiave.
         /// </summary>
-        public int Id { get; set; }
+        public int? Id { get; set; }
         /// <summary>
         /// Evenutali indirizzi addizionali.
         /// </summary>

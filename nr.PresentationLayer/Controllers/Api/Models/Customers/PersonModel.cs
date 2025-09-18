@@ -19,6 +19,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Customers
         /// Cognome.
         /// </summary>
         public required string LastName { get; set; }
+        public required string FiscalCode {  get; set; }
         /// <summary>
         /// Nomignolo.
         /// </summary>

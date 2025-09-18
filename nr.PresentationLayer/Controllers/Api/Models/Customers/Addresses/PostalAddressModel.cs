@@ -1,5 +1,4 @@
-﻿using nr.Utils;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
 {

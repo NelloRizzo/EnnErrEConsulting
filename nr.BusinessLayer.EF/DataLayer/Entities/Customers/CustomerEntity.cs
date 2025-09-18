@@ -1,5 +1,4 @@
 ﻿using nr.BusinessLayer.EF.DataLayer.Entities.Customers.Addresses;
-using nr.BusinessLayer.EF.DataLayer.Entities.Operators;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

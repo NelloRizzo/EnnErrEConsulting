@@ -8,8 +8,7 @@ namespace nr.BusinessLayer.EF.Migrations
     public partial class CustomerLoginAdded : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.AddColumn<int>(
                 name: "UserId",
                 table: "Customers",
@@ -30,8 +29,7 @@ namespace nr.BusinessLayer.EF.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropForeignKey(
                 name: "FK_Customers_Users_UserId",
                 table: "Customers");

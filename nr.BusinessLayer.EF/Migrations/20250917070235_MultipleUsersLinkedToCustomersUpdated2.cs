@@ -8,8 +8,7 @@ namespace nr.BusinessLayer.EF.Migrations
     public partial class MultipleUsersLinkedToCustomersUpdated2 : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropForeignKey(
                 name: "FK_CustomerUserRelationship_Customers_CustomerId",
                 table: "CustomerUserRelationship");
@@ -54,8 +53,7 @@ namespace nr.BusinessLayer.EF.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropForeignKey(
                 name: "FK_CustomersUsers_Customers_CustomerId",
                 table: "CustomersUsers");

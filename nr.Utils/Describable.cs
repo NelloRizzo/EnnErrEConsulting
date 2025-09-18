@@ -50,8 +50,8 @@ namespace nr.Utils
                         else
                             return $"{p.Name}={v}";
                     if (v is string) {
-                            return $"{p.Name}=\"{v}\"";
-                        }
+                        return $"{p.Name}=\"{v}\"";
+                    }
                     return $"{p.Name}={v.Describe(numberFormatInfo, dateTimeFormatInfo, recursion + 1)}";
                 }))
                 .Append(')').ToString();

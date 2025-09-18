@@ -1,8 +1,4 @@
-﻿using nr.PresentationLayer.Controllers.Api.Models.Attachments;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-namespace nr.PresentationLayer.Controllers.Api.JsonConverters
+﻿namespace nr.PresentationLayer.Controllers.Api.JsonConverters
 {
     /// <summary>
     /// Converter JSON per tutti gli indirizzi.

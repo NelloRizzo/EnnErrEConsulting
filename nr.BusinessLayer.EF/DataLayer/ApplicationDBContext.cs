@@ -39,7 +39,7 @@ namespace nr.BusinessLayer.EF.DataLayer
 
             modelBuilder.Entity<CustomerUserRelationship>()
                 .ToTable("CustomersUsers")
-                .HasKey(e => new {  e.CustomerId, e.UserId });
+                .HasKey(e => new { e.CustomerId, e.UserId });
         }
     }
 }

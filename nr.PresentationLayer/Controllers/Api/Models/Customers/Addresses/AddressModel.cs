@@ -1,5 +1,4 @@
-﻿using nr.PresentationLayer.Controllers.Api.JsonConverters;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace nr.PresentationLayer.Controllers.Api.Models.Customers.Addresses
 {

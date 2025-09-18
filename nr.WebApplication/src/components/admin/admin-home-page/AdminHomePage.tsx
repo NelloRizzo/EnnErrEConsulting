@@ -155,7 +155,20 @@ const AdminHomePage: React.FC = () => {
         </aside>
 
         <main className="admin-main">
-          {renderTabContent()}
+          <div className='admin-content'>
+            {activeTab === 'customers' && (
+              <div className="page-header">
+                <h2>Gestione Clienti</h2>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setActiveTab('new-customer')}
+                >
+                  Aggiungi Nuovo Cliente
+                </button>
+              </div>
+            )}
+            {renderTabContent()}
+          </div>
         </main>
       </div>
     </div>

@@ -42,15 +42,14 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ customerId, onSave, onCance
         setError(null);
 
         try {
-            let response;
             const customerData = customer || (customerType === 'company'
                 ? { $type: 'company' } as CompanyModel
                 : { $type: 'person' } as PersonModel);
 
             if (customerId) {
-                response = await customerService.updateCustomer(customerId, customerData);
+                await customerService.updateCustomer(customerId, customerData);
             } else {
-                response = await customerService.createCustomer(customerData);
+                await customerService.createCustomer(customerData);
             }
 
             onSave?.();

@@ -18,7 +18,7 @@ builder.Services
 builder.Services
     .AddExceptionHandler<GlobalExceptionHandler>()
     .AddProblemDetails()
-    //.Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true)
+    .Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true)
     ;
 
 builder.Services.AddOpenApi("v1");

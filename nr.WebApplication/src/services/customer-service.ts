@@ -26,9 +26,24 @@ class CustomerService {
     }
 
     // Create new customer
-    async createCustomer(customer: CustomerModel): Promise<CustomerModel> {
+    async createCompany(customer: CompanyModel): Promise<CustomerModel> {
         try {
-            const response = await fetch(`${this.baseUrl}/${isPersonModel(customer) ? 'person' : 'company'}`, {
+            const response = await fetch(`${this.baseUrl}/company`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(customer),
+            });
+            return await response.json();
+        } catch (error) {
+            throw new Error(`Failed to create customer: ${error}`);
+        }
+    }
+    async createPerson(customer: PersonModel): Promise<CustomerModel> {
+        try {
+            console.log("CustomerService", "Saving person", customer)
+            const response = await fetch(`${this.baseUrl}/person`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

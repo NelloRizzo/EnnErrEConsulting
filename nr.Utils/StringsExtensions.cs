@@ -48,6 +48,7 @@ namespace nr.Utils
 
         public static bool IsValidFiscalCode(string code) {
             if (code.Length != 16) return false;
+            code = code.ToUpper();
             int[] odds = [1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, 20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23];
             int sum = 0;
             foreach (var (c, i) in code[..^1].EnumerateChars()) {

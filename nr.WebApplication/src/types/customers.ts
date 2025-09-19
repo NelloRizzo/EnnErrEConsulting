@@ -41,6 +41,7 @@ export interface PersonModel extends CustomerModel {
   firstName: string;
   lastName: string;
   nickname?: string;
+  fiscalCode: string;
   businessAddress: PostalAddressModel;
 }
 

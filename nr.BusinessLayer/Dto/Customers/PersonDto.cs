@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using nr.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace nr.BusinessLayer.Dto.Customers
 {
@@ -22,6 +23,8 @@ namespace nr.BusinessLayer.Dto.Customers
         /// </summary>
         [MaxLength(25)]
         public string? Nickname { get; set; }
+        [Required, FiscalCode]
+        public required string FiscalCode {  get; set; }
         /// <inheritdoc/>
         public override string DisplayName => Nickname ?? $"{FirstName} {LastName}";
     }

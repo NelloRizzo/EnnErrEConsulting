@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { CustomerModel, isCompanyModel, isPersonModel } from '../../../types/customers';
 import { customerService } from '../../../services/customer-service';
 import './CustomerList.scss';
+import LoadingSpinner from '../../loading-spinner/LoadingSpinner';
 
 interface CustomerListProps {
     onEditCustomer?: (id: number) => void;
@@ -61,8 +62,8 @@ const CustomerList: React.FC<CustomerListProps> = ({ onEditCustomer }) => {
         }
     };
 
-    if (loading) return <div className="loading">Caricamento clienti...</div>;
-    if (error) return <div className="error">Errore: {error}</div>;
+    if (loading) return <LoadingSpinner text="Caricamento clienti..." />;
+    if (error) return <div className='customer-list'><div className="error">Errore: {error}</div></div>;
 
     return (
         <div className="customer-list">

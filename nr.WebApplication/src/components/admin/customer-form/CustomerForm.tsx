@@ -45,11 +45,16 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ customerId, onSave, onCance
             const customerData = customer || (customerType === 'company'
                 ? { $type: 'company' } as CompanyModel
                 : { $type: 'person' } as PersonModel);
-
+            console.log("CustomerForm handleSubmit", customerData)
             if (customerId) {
                 await customerService.updateCustomer(customerId, customerData);
             } else {
-                await customerService.createCustomer(customerData);
+                if (customerType === 'company') {
+                    await customerService.createCompany(customerData as CompanyModel);
+                }
+                else {
+                    await customerService.createPerson(customerData as PersonModel);
+                }
             }
 
             onSave?.();
@@ -221,6 +226,14 @@ const PersonFormFields: React.FC<{
                     onChange={(e) => onChange('nickname', e.target.value)}
                 />
             </div>
+            <div className="form-group">
+                <label>FiscalCode</label>
+                <input
+                    type="text"
+                    value={customer?.fiscalCode || ''}
+                    onChange={(e) => onChange('fiscalCode', e.target.value)}
+                />
+            </div>
 
             <AddressForm
                 address={customer?.businessAddress}
@@ -268,6 +281,14 @@ const AddressForm: React.FC<{
                     type="text"
                     value={address?.postalCode || ''}
                     onChange={(e) => updateAddressField('postalCode', e.target.value)}
+                />
+            </div>
+            <div className="form-group">
+                <label>City</label>
+                <input
+                    type="text"
+                    value={address?.city || ''}
+                    onChange={(e) => updateAddressField('city', e.target.value)}
                 />
             </div>
             <div className="form-group">

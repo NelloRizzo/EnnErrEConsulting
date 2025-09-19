@@ -24,5 +24,7 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Customers
         /// </summary>
         [MaxLength(25)]
         public string? Nickname { get; set; }
+        [Required, StringLength(16, MinimumLength = 16)]
+        public required string FiscalCode { get; set; }
     }
 }

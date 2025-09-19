@@ -55,8 +55,10 @@ namespace nr.BusinessLayer.EF
                 .ForMember(d => d.Addresses, m => m.Ignore())
                 ;
             CreateMap<CompanyDto, CompanyEntity>()
+                .ForMember(d => d.FiscalCode, m => m.MapFrom(s => s.FiscalCode == null ? null : s.FiscalCode.ToUpper()))
                 ;
             CreateMap<PersonDto, PersonEntity>()
+                .ForMember(d => d.FiscalCode, m => m.MapFrom(s => s.FiscalCode == null ? null : s.FiscalCode.ToUpper()))
                 ;
 
             CreateMap<CustomerEntity, CustomerDto>()

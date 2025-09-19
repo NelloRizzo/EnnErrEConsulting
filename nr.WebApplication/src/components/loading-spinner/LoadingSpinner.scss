@@ -1,0 +1,193 @@
+// components/LoadingSpinner.scss
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 8px;
+
+  &.full-screen {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  &.full-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+  }
+
+  .spinner {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+
+    .spinner-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid transparent;
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+
+      &:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: -0.3s;
+        border-top-color: #2ecc71;
+      }
+
+      &:nth-child(3) {
+        animation-delay: -0.15s;
+        border-top-color: #e74c3c;
+      }
+
+      &:nth-child(4) {
+        border-top-color: #f39c12;
+      }
+    }
+  }
+
+  // Varianti di dimensione
+  &.small {
+    .spinner {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .loading-text {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.medium {
+    .spinner {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .loading-text {
+      font-size: 1rem;
+    }
+  }
+
+  &.large {
+    .spinner {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .loading-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  .loading-text {
+    margin-top: 15px;
+    color: #2c3e50;
+    text-align: center;
+    font-size: 1rem;
+    max-width: 200px;
+  }
+}
+
+// Animazione
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Variante alternativa: spinner a punti
+.loading-spinner.dots {
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    .spinner-circle {
+      position: static;
+      width: 8px;
+      height: 8px;
+      background-color: #3498db;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+
+      &:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: -0.16s;
+        background-color: #2ecc71;
+      }
+
+      &:nth-child(3) {
+        background-color: #e74c3c;
+      }
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .loading-spinner {
+    padding: 15px;
+    
+    &.medium {
+      .spinner {
+        width: 32px;
+        height: 32px;
+      }
+      
+      .loading-text {
+        font-size: 0.9rem;
+      }
+    }
+    
+    &.large {
+      .spinner {
+        width: 48px;
+        height: 48px;
+      }
+      
+      .loading-text {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}

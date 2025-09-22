@@ -69,6 +69,7 @@ namespace nr.PresentationLayer.Controllers.Api
         [HttpGet("download/{linkId}", Name = nameof(Download))]
         public async Task<IActionResult> Download([FromRoute] int linkId) {
             try {
+                var attachment = await attachmentService.GetByIdAsync(linkId);
                 var link = await attachmentService.GetLinkByAttachmentIdAsync(linkId);
                 if (link is ContentLinkDto c) {
                     return File(c.Content, c.MimeType);
@@ -81,7 +82,7 @@ namespace nr.PresentationLayer.Controllers.Api
             catch (Exception) {
                 try {
                     var fileInfo = fileProvider.GetFileInfo("images/noimage.jpg");
-                    return File(fileInfo.CreateReadStream(), "image/jpeg");
+                    return File(fileInfo.CreateReadStream(), "image/jpeg", "NoImageFound.jpg");
                 }
                 catch (Exception) {
                     return NotFound();

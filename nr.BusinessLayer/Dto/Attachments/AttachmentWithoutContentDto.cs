@@ -10,6 +10,7 @@
         /// Descrizione.
         /// </summary>
         public required string Description { get; set; }
+        public required string FileName { get; set; }
         /// <summary>
         /// Chiave del contenuto.
         /// </summary>

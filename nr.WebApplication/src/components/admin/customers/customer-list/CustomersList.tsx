@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { CustomerModel, isCompanyModel, isPersonModel } from '../../../../types/customers';
 import { customerService } from '../../../../services/customer-service';
 import './CustomerList.scss';
-import LoadingSpinner from '../../../loading-spinner/LoadingSpinner';
+import LoadingSpinner from '../../../commons/loading-spinner/LoadingSpinner';
 
 interface CustomerListProps {
     onEditCustomer?: (id: number) => void;

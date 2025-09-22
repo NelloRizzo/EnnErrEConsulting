@@ -1,7 +1,7 @@
 // HomePage.tsx
 import React from 'react';
 import './HomePage.scss';
-import SeoHead from '../../seo-head/SeoHead';
+import SeoHead from '../../commons/seo-head/SeoHead';
 
 const HomePage: React.FC = () => {
   return (

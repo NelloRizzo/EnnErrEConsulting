@@ -1,7 +1,7 @@
 // components/AttachmentForm.tsx
 import React, { useState } from 'react';
 import { NewAttachmentModel, LinkModel, UrlLinkModel, ContentLinkModel, isUrlLinkModel, isContentLinkModel } from '../../../../types/attachments';
-import LoadingSpinner from '../../../loading-spinner/LoadingSpinner';
+import LoadingSpinner from '../../../commons/loading-spinner/LoadingSpinner';
 import './AttachmentForm.scss';
 
 interface AttachmentFormProps {

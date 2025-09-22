@@ -28,8 +28,4 @@
     <ProjectReference Include="..\nr.BusinessLayer.EF\nr.BusinessLayer.EF.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\Middlewares\" />
-  </ItemGroup>
-
 </Project>

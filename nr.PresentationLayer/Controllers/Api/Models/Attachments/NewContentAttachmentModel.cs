@@ -3,21 +3,17 @@
 namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
 {
     /// <summary>
-    /// Un allegato.
+    /// Un allegato con contenuto interno.
     /// </summary>
-    public class AttachmentModel
+    public class NewContentAttachmentModel
     {
-        /// <summary>
-        /// Chiave
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Titolo.
         /// </summary>
         [Required, MaxLength(80)]
         public required string Title { get; set; }
         [Required, MaxLength(80)]
-        public required string FileName {  get; set; }
+        public required string FileName { get; set; }
         /// <summary>
         /// Descrizione.
         /// </summary>
@@ -26,6 +22,6 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
         /// <summary>
         /// Contenuto.
         /// </summary>
-        public required LinkModel Content { get; set; }
+        public required ContentLinkModel Content { get; set; }
     }
 }

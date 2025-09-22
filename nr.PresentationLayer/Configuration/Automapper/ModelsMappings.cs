@@ -115,10 +115,13 @@ namespace nr.PresentationLayer.Configuration.Automapper
             CreateMap<AttachmentDto, AttachmentModel>()
                 .IncludeAllDerived()
                 ;
-            CreateMap<AttachmentDto, NewAttachmentModel>()
+            CreateMap<AttachmentDto, NewContentAttachmentModel>()
                 .IncludeAllDerived()
                 ;
-            CreateMap<NewAttachmentModel, AttachmentDto>()
+            CreateMap<NewContentAttachmentModel, AttachmentDto>()
+                .IncludeAllDerived()
+                ;
+            CreateMap<NewUrlAttachmentModel, AttachmentDto>()
                 .IncludeAllDerived()
                 ;
             CreateMap<AttachmentWithoutContentDto, AttachmentModel>()
@@ -138,12 +141,12 @@ namespace nr.PresentationLayer.Configuration.Automapper
                 //.ForMember(d => d.Type, m => m.MapFrom(s => UrlLinkModel.ModelType))
                 ;
             CreateMap<ContentLinkDto, ContentLinkModel>()
-                .ForMember(d => d.Content, m => m.MapFrom(s => Convert.ToBase64String(s.Content)))
+                //.ForMember(d => d.Content, m => m.MapFrom(s => Convert.ToBase64String(s.Content)))
                 .IncludeAllDerived()
                 //.ForMember(d => d.Type, m => m.MapFrom(s => ContentLinkModel.ModelType))
                 ;
             CreateMap<ContentLinkModel, ContentLinkDto>()
-                .ForMember(d => d.Content, m => m.MapFrom(s => Encoding.UTF8.GetBytes(s.Content)))
+                //.ForMember(d => d.Content, m => m.MapFrom(s => Encoding.UTF8.GetBytes(s.Content)))
                 .IncludeAllDerived()
                 ;
             #endregion

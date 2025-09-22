@@ -1,9 +1,9 @@
 // components/CustomerList.tsx
 import React, { useState, useEffect } from 'react';
-import { CustomerModel, isCompanyModel, isPersonModel } from '../../../types/customers';
-import { customerService } from '../../../services/customer-service';
+import { CustomerModel, isCompanyModel, isPersonModel } from '../../../../types/customers';
+import { customerService } from '../../../../services/customer-service';
 import './CustomerList.scss';
-import LoadingSpinner from '../../loading-spinner/LoadingSpinner';
+import LoadingSpinner from '../../../loading-spinner/LoadingSpinner';
 
 interface CustomerListProps {
     onEditCustomer?: (id: number) => void;
@@ -73,7 +73,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ onEditCustomer }) => {
                         <tr>
                             <th>Tipo</th>
                             <th>Nome</th>
-                            <th>Dettagli</th>
+                            <th>Dati Fiscali</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
@@ -89,33 +89,34 @@ const CustomerList: React.FC<CustomerListProps> = ({ onEditCustomer }) => {
                                 <td>
                                     {isCompanyModel(customer) && (
                                         <div>
-                                            <div><strong>Azienda:</strong> {customer.companyName}</div>
                                             {
-                                                customer.vatCode && (<div><strong>P.IVA:</strong> {customer.vatCode}</div>) || (<div><strong>Codice Fiscale:</strong> {customer.fiscalCode}</div>)
+                                                customer.vatCode && (<div><strong>P. IVA:</strong> {customer.vatCode}</div>)
+                                            }
+                                            {
+                                                customer.fiscalCode && (<div><strong>Codice Fiscale:</strong> {customer.fiscalCode}</div>)
                                             }
                                         </div>
                                     )}
                                     {isPersonModel(customer) && (
                                         <div>
-                                            <div><strong>Persona:</strong> {customer.firstName} {customer.lastName}</div>
-                                            <div><strong>Nickname:</strong> {customer.nickname || 'N/A'}</div>
+                                            <div><strong>Codice Fiscale:</strong> {customer.fiscalCode}</div>
                                         </div>
                                     )}
                                 </td>
                                 <td>
                                     <div className="action-buttons">
+                                        <button title='Visualizza'
+                                            className="btn btn-view"
+                                            onClick={() => onEditCustomer && onEditCustomer(customer.id)}
+                                        >👀</button>
                                         <button title='Modifica'
                                             className="btn btn-edit"
                                             onClick={() => onEditCustomer && onEditCustomer(customer.id)}
-                                        >
-                                            ✏
-                                        </button>
+                                        >✏</button>
                                         <button title='Elimina'
                                             className="btn btn-delete"
                                             onClick={() => handleDelete(customer.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                        >🗑</button>
                                     </div>
                                 </td>
                             </tr>

@@ -88,16 +88,17 @@ namespace nr.BusinessLayer.EF.Services
 
         /// <inheritdoc/>
         /// <exception cref="ServiceException"></exception>
-        public async Task<LinkDto> GetLinkByIdAsync(int linkId) {
+        public async Task<LinkDto> GetLinkByAttachmentIdAsync(int attachmentId) {
             try {
-                var entity = await context.Links.FindAsync(linkId) ?? throw new EntityNotFoundException { SearchedKey = linkId, SearchedType = typeof(LinkDto) };
+                var attachment = await context.Attachments.FindAsync(attachmentId) ?? throw new EntityNotFoundException { SearchedKey = attachmentId, SearchedType = typeof(AttachmentDto) };
+                var entity = await context.Links.FindAsync(attachment.LinkId);
                 return mapper.Map<LinkDto>(entity);
             }
             catch (ServiceException) {
                 throw;
             }
             catch (Exception ex) {
-                logger.LogError(ex, "Exception getting link by id {}", linkId);
+                logger.LogError(ex, "Exception getting link by id {}", attachmentId);
                 throw new ServiceException(innerException: ex);
             }
         }

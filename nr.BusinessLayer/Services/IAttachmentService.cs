@@ -38,6 +38,6 @@ namespace nr.BusinessLayer.Services
         /// <param name="linkId">Chiave del documento.</param>
         /// <returns>Restituisce il documento come url se si tratta di un documento esterno, oppure comprensivo di contenuto in bytes 
         /// se si tratta di un documento embedded.</returns>
-        Task<LinkDto> GetLinkByIdAsync(int linkId);
+        Task<LinkDto> GetLinkByAttachmentIdAsync(int attachmentId);
     }
 }

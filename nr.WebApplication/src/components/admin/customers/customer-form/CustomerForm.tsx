@@ -1,7 +1,7 @@
 // components/CustomerForm.tsx
 import React, { useState, useEffect } from 'react';
-import { CustomerModel, CompanyModel, PersonModel, isCompanyModel, isPersonModel, PostalAddressModel } from '../../../types/customers';
-import { customerService } from '../../../services/customer-service';
+import { CustomerModel, CompanyModel, PersonModel, isCompanyModel, isPersonModel, PostalAddressModel } from '../../../../types/customers';
+import { customerService } from '../../../../services/customer-service';
 import './CustomerForm.scss';
 
 interface CustomerFormProps {

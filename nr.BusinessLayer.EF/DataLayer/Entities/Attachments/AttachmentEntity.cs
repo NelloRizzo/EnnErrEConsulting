@@ -26,6 +26,8 @@ namespace nr.BusinessLayer.EF.DataLayer.Entities.Attachments
         /// </summary>
         [Required, MaxLength(1024)]
         public required string Description { get; set; }
+        [Required, MaxLength(80)]
+        public required string FileName {  get; set; }
         /// <summary>
         /// Chiave per il recupero del contenuto dell'allegato.
         /// </summary>

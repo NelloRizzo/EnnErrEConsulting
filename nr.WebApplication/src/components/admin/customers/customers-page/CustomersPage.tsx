@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import CustomerList from '../customer-list/CustomersList';
 import CustomerForm from '../customer-form/CustomerForm';
-import SeoHead from '../../seo-head/SeoHead';
+import SeoHead from '../../../seo-head/SeoHead';
 import './AdminCustomersPage.scss';
 
 const CustomersPage: React.FC = () => {

@@ -3,9 +3,9 @@
 namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
 {
     /// <summary>
-    /// Un allegato.
+    /// Un allegato con contenuto esterno.
     /// </summary>
-    public class NewAttachmentModel
+    public class NewUrlAttachmentModel
     {
         /// <summary>
         /// Titolo.
@@ -20,6 +20,6 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
         /// <summary>
         /// Contenuto.
         /// </summary>
-        public required LinkModel Content { get; set; }
+        public required UrlLinkModel Content { get; set; }
     }
 }

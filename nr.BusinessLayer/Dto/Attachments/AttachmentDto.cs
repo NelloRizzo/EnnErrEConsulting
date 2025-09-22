@@ -12,6 +12,8 @@ namespace nr.BusinessLayer.Dto.Attachments
         /// </summary>
         [Required, MaxLength(80)]
         public required string Title { get; set; }
+        [Required, MaxLength(80)]
+        public string? FileName {  get; set; }
         /// <summary>
         /// Descrizione.
         /// </summary>

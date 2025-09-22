@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using nr.BusinessLayer.EF;
 using nr.PresentationLayer.Configuration.Automapper;
@@ -19,6 +20,7 @@ builder.Services
     .AddExceptionHandler<GlobalExceptionHandler>()
     .AddProblemDetails()
     .Configure<ApiBehaviorOptions>(cfg => cfg.SuppressModelStateInvalidFilter = true)
+    .AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Public")))
     ;
 
 builder.Services.AddOpenApi("v1");
@@ -58,7 +60,7 @@ if (app.Environment.IsDevelopment()) {
 
 }
 
-//app.UseExceptionHandler().UseStatusCodePages();
+app.UseExceptionHandler().UseStatusCodePages();
 
 app.UseHttpsRedirection();
 

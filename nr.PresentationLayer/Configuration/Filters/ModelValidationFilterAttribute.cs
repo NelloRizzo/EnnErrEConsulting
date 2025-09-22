@@ -8,10 +8,10 @@ namespace nr.PresentationLayer.Configuration.Filters
     public class ModelValidationFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context) {
-            // TODO: RIMUOVERE!
-            //if (!context.ModelState.IsValid) {
-            //    context.Result = new BadRequestObjectResult(GetValidationErrors(context.ModelState));
-            //}
+        //TODO: RIMUOVERE!
+            if (!context.ModelState.IsValid) {
+                context.Result = new BadRequestObjectResult(GetValidationErrors(context.ModelState));
+            }
         }
 
         private static object GetValidationErrors(ModelStateDictionary modelState) {

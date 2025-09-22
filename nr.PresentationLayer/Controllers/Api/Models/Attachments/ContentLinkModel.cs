@@ -14,7 +14,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
         /// <summary>
         /// Il contenuto trasformato in bytes.
         /// </summary>
-        [Required, MaxLength(1 * 1000000)]
-        public required string Content { get; set; }
+        [Required, MaxLength(128 * 1048576)] // 128 Mb max
+        public required int[] Content { get; set; }
     }
 }

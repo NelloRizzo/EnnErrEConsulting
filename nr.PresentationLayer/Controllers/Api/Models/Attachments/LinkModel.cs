@@ -7,7 +7,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
     /// Classe base per i contenuti.
     /// </summary>
     //[JsonConverter(typeof(LinkModelConverter))]
-    [JsonDerivedType(typeof(ContentLinkModel), "link")]
+    [JsonDerivedType(typeof(ContentLinkModel), "internal")]
     [JsonDerivedType(typeof(UrlLinkModel), "url")]
     public abstract class LinkModel
     {
@@ -15,6 +15,7 @@ namespace nr.PresentationLayer.Controllers.Api.Models.Attachments
         /// Chiave.
         /// </summary>
         public int Id { get; set; }
+        public string? Type {  get; set; }
         /// <summary>
         /// Tipo di documento.
         /// </summary>

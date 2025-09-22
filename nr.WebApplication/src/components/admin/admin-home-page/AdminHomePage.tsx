@@ -1,9 +1,13 @@
 // AdminHomePage.tsx
 import React, { useState } from 'react';
 import './AdminHomePage.scss';
-import CustomerList from '../customer-list/CustomersList';
-import CustomerForm from '../customer-form/CustomerForm';
+import CustomerList from '../customers/customer-list/CustomersList';
+import CustomerForm from '../customers/customer-form/CustomerForm';
 import Dashboard from '../dashboard/Dashboard';
+import AttachmentForm from '../attachments/attachment-form/AttachmentForm';
+import { isContentLinkModel, NewAttachmentModel } from '../../../types/attachments';
+import { useAttachmentService } from '../../../services/attachment-service';
+import { AttachmentsPage } from '../attachments/attachment-page/AttachmentPage';
 
 interface Course {
   id: number;
@@ -13,6 +17,7 @@ interface Course {
 }
 
 const AdminHomePage: React.FC = () => {
+  const attachmentService = useAttachmentService();
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | undefined>();
   const [courses, setCourses] = useState<Course[]>([
@@ -43,6 +48,16 @@ const AdminHomePage: React.FC = () => {
   // Render del contenuto in base al tab attivo
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'new-attachment':
+        return <AttachmentForm onSubmit={async (a: NewAttachmentModel) => {
+          if (isContentLinkModel(a.content))
+            await attachmentService.createInternalAttachment(a);
+          else
+            await attachmentService.createUrlAttachment(a)
+          setActiveTab("attachments")
+        }} onCancel={() => setActiveTab("attachments")} />
+      case 'attachments':
+        return <AttachmentsPage />
       case 'dashboard':
         return <Dashboard />;
 
@@ -121,6 +136,12 @@ const AdminHomePage: React.FC = () => {
                 Dashboard
               </li>
               <li
+                className={activeTab === 'attachments' ? 'active' : ''}
+                onClick={() => setActiveTab('attachments')}
+              >
+                Allegati
+              </li>
+              <li
                 className={activeTab === 'customers' ? 'active' : ''}
                 onClick={() => setActiveTab('customers')}
               >
@@ -164,6 +185,17 @@ const AdminHomePage: React.FC = () => {
                   onClick={() => setActiveTab('new-customer')}
                 >
                   Aggiungi Nuovo Cliente
+                </button>
+              </div>
+            )}
+            {activeTab === 'attachments' && (
+              <div className="page-header">
+                <h2>Gestione Allegati</h2>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setActiveTab('new-attachment')}
+                >
+                  Aggiungi Nuovo Allegato
                 </button>
               </div>
             )}
